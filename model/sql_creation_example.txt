@@ -1,0 +1,75 @@
+CREATE TABLE [station_sensors] (
+[station] VARCHAR(40)  NULL,
+[sensor_name] VARCHAR(40)  NULL,
+[time] DATETIME  NULL,
+[sensor_value] FLOAT  NULL,
+PRIMARY KEY ([station],[sensor_name],[time])
+)
+
+CREATE TABLE [station_status] (
+[station] VARCHAR(40)  NULL,
+[status_name] VARCHAR(40)  NULL,
+[time] DATETIME  NULL,
+[status_value] FLOAT  NULL,
+PRIMARY KEY ([station],[status_name],[time])
+)
+
+
+insert into station_sensors values ('uv','temperatura','2020-08-19 13:05:12',22.87);
+insert into station_sensors values ('uv','temperatura','2020-08-19 13:10:12',22.92);
+insert into station_sensors values ('uv','temperatura','2020-08-19 13:15:12',22.95);
+insert into station_sensors values ('uv','temperatura','2020-08-19 13:20:12',23.13);
+insert into station_sensors values ('uv','temperatura','2020-08-19 13:25:12',23.25);
+insert into station_sensors values ('uv','temperatura','2020-08-19 13:30:12',23.05);
+insert into station_sensors values ('uv','co2','2020-08-19 13:05:12',38.54);
+insert into station_sensors values ('uv','co2','2020-08-19 13:10:12',34.94);
+insert into station_sensors values ('uv','co2','2020-08-19 13:15:12',36.51);
+insert into station_sensors values ('uv','co2','2020-08-19 13:20:12',37.22);
+insert into station_sensors values ('uv','co2','2020-08-19 13:25:12',38.54);
+insert into station_sensors values ('uv','co2','2020-08-19 13:30:12',38.95);
+
+insert into station_status values ('uv','battery','2020-08-19 13:05:12',58.54);
+insert into station_status values ('uv','battery','2020-08-19 13:10:12',57.94);
+insert into station_status values ('uv','battery','2020-08-19 13:15:12',56.51);
+insert into station_status values ('uv','battery','2020-08-19 13:20:12',56.22);
+insert into station_status values ('uv','battery','2020-08-19 13:25:12',55.54);
+insert into station_status values ('uv','battery','2020-08-19 13:30:12',55.30);
+
+insert into station_sensors values ('blasco ibañez','temperatura','2020-08-19 16:22:02',23.24);
+insert into station_sensors values ('blasco ibañez','temperatura','2020-08-19 16:27:02',25.57);
+insert into station_sensors values ('blasco ibañez','temperatura','2020-08-19 16:32:02',25.24);
+insert into station_sensors values ('blasco ibañez','temperatura','2020-08-19 16:38:02',24.24);
+insert into station_sensors values ('blasco ibañez','temperatura','2020-08-19 16:43:02',24.05);
+insert into station_sensors values ('blasco ibañez','temperatura','2020-08-19 16:47:02',22.89);
+insert into station_sensors values ('blasco ibañez','co2','2020-08-19 16:22:02',51.2924);
+insert into station_sensors values ('blasco ibañez','co2','2020-08-19 16:27:02',52.2924);
+insert into station_sensors values ('blasco ibañez','co2','2020-08-19 16:32:02',51.2924);
+insert into station_sensors values ('blasco ibañez','co2','2020-08-19 16:38:02',54.2924);
+insert into station_sensors values ('blasco ibañez','co2','2020-08-19 16:43:02',50.2924);
+insert into station_sensors values ('blasco ibañez','co2','2020-08-19 16:47:02',51.2924);
+
+insert into station_status values ('blasco ibañez','lat','2020-08-19 16:22:02',39.472894);
+insert into station_status values ('blasco ibañez','lat','2020-08-19 16:27:02',39.473913);
+insert into station_status values ('blasco ibañez','lat','2020-08-19 16:32:02',39.474222);
+insert into station_status values ('blasco ibañez','lat','2020-08-19 16:38:02',39.475624);
+insert into station_status values ('blasco ibañez','lat','2020-08-19 16:43:02',39.475994);
+insert into station_status values ('blasco ibañez','lat','2020-08-19 16:47:02',39.476382);
+insert into station_status values ('blasco ibañez','lon','2020-08-19 16:22:02',-0.342833);
+insert into station_status values ('blasco ibañez','lon','2020-08-19 16:27:02',-0.342916);
+insert into station_status values ('blasco ibañez','lon','2020-08-19 16:32:02',-0.343542);
+insert into station_status values ('blasco ibañez','lon','2020-08-19 16:38:02',-0.353708);
+insert into station_status values ('blasco ibañez','lon','2020-08-19 16:43:02',-0.353833);
+insert into station_status values ('blasco ibañez','lon','2020-08-19 16:47:02',-0.354515);
+
+insert into station_sensors values ('puerto','temperatura','2020-08-19 13:05:12',20.67);
+insert into station_sensors values ('puerto','temperatura','2020-08-19 13:10:12',20.92);
+insert into station_sensors values ('puerto','temperatura','2020-08-19 13:15:12',19.95);
+insert into station_sensors values ('puerto','temperatura','2020-08-19 13:20:12',19.13);
+insert into station_sensors values ('puerto','temperatura','2020-08-19 13:25:12',20.25);
+insert into station_sensors values ('puerto','temperatura','2020-08-19 13:30:12',21.05);
+insert into station_sensors values ('puerto','PM10','2020-08-19 13:05:12',58.64);
+insert into station_sensors values ('puerto','PM10','2020-08-19 13:10:12',54.84);
+insert into station_sensors values ('puerto','PM10','2020-08-19 13:15:12',56.41);
+insert into station_sensors values ('puerto','PM10','2020-08-19 13:20:12',57.62);
+insert into station_sensors values ('puerto','PM10','2020-08-19 13:25:12',58.34);
+insert into station_sensors values ('puerto','PM10','2020-08-19 13:30:12',58.95);
