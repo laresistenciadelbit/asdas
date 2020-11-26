@@ -1,0 +1,9 @@
+SELECT se.station,se.sensor_name,se.time, se.sensor_value, st.status_name, st.status_value from station_sensors se JOIN station_status st ON se.station==st.station and se.time=st.time;
+\_al no ser outer full join no selecciona los que no tienen status
+
+  *sqlite no permite full outer join
+
+  *lo podemos emular con https://www.sqlitetutorial.net/sqlite-full-outer-join/
+
+  SELECT se.station,se.sensor_name,se.time, se.sensor_value, st.status_name, st.status_value from station_sensors se LEFT JOIN station_status st USING(station,time)
+   UNION ALL SELECT se.station,se.sensor_name,se.time, se.sensor_value, st.status_name, st.status_value from station_sensors se LEFT JOIN station_status st USING(station,time) where station is null and time is null;
