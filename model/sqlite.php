@@ -8,6 +8,16 @@ class Mydb extends SQLite3
 		$this->open('model/ASDAS.db');
 	}
 	
+	function load_config()
+	{
+		$ret = $this->query("SELECT * FROM config;");
+		if(!$ret) {
+			echo $this->lastErrorMsg();
+		}
+		while($row = $ret->fetchArray(SQLITE3_ASSOC) ){$config=$row;}
+		return $config;
+	}
+	
 	function insert_station_data($station,$sensor_name,$time,$sensor_value)
 	{
 		$ret = $this->exec("INSERT INTO station_sensors values ('".$station."','".$sensor_name."','".$sensor_value."','".$time."');");
@@ -68,7 +78,14 @@ class Mydb extends SQLite3
 		if(!$ret) {
 			echo $this->lastErrorMsg();
 		}
-		return $ret;
+		
+		$array=array();
+		while($row = $ret->fetchArray(SQLITE3_ASSOC))
+		{	
+			$row=array_map('utf8_encode', $row);
+			array_push($array,$row['station']);
+		}
+		return $array;
 	}
 	  
 }
