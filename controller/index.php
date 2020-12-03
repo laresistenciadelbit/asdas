@@ -20,69 +20,71 @@ if (strlen($json_params) > 0 && isValidJSON($json_params))
 		if(isset($json_params['status_name']))
 			$model->insert_station_data($json_params['station_id'],$json_params['status_name'],$json_params['time'],$json_params['status_val']);
 }
-
-//manejamos las peticiones del usuario
-
-$use_map=false;	// <- activa el script del api de mapas de osm
-
-if(isset($_GET['s']))
+else //manejamos las peticiones del usuario
 {
-	$current_station=$_GET['s'];
-	$current_page=$_GET['s'];
-	$current_view='sensor';
-	$use_map=true;
+	$stations=$model->get_station_names();
+	$config=$model->get_config();
 	
-}
-else
-{
-	if(isset($_GET['c']))
+	$use_map=false;	// <- activa el script del api de mapas de osm (por defectro falso, luego se reescribe si es necesario)
+
+	if(isset($_GET['s']))
 	{
-		$current_page="Contacto";
-		$current_view='contact';
+		$current_station=$_GET['s'];
+		$current_page=$_GET['s'];
+		$current_view='sensor';
+		$use_map=true;
+		
 	}
 	else
 	{
-		$current_page="Página principal";
-		$current_view='main';
-		$use_map=true;
-		$station_data=$model->get_all();
-		
-		// https://stackoverflow.com/questions/20694317/json-encode-function-special-characters
-	/*	//mysql data to one array
-		$array=array();
-		while($row = $result->fetch_array(MYSQL_ASSOC))
+		if(isset($_GET['c']))
 		{
-			# Converting each column to UTF8
-			$row = array_map('utf8_encode', $row);
-			array_push($array,$row);
+			$current_page="Contacto";
+			$current_view='contact';
 		}
-		json_encode($array);
-	*/
-		
-	/*	// sqlite data to one array
+		else
+		{
+			$current_page="Página principal";
+			$current_view='main';
+			$use_map=true;
+			$unsorted_data=$model->get_all();
+			
+			// https://stackoverflow.com/questions/20694317/json-encode-function-special-characters
+		/*	//mysql data to one array
 			$array=array();
-			while($row = $station_data->fetchArray(SQLITE3_ASSOC))
+			while($row = $result->fetch_array(MYSQL_ASSOC))
 			{
+				# Converting each column to UTF8
 				$row = array_map('utf8_encode', $row);
 				array_push($array,$row);
 			}
-			echo json_encode($array);
-	*/
-		
-	/*		//array en bruto (sqlite)
-				while ($row = $station_data->fetchArray(SQLITE3_ASSOC)) {
-					//var_dump(json_encode(array_values($row)));
-					//var_dump(json_encode($row));
-					//var_dump($row);
-					
-					var_dump(json_encode(array_map('utf8_encode',$row)));
+			json_encode($array);
+		*/
+			
+		/*	// sqlite data to one array
+				$array=array();
+				while($row = $unsorted_data->fetchArray(SQLITE3_ASSOC))
+				{
+					$row = array_map('utf8_encode', $row);
+					array_push($array,$row);
 				}
-	*/
-//	die();
+				echo json_encode($array);
+		*/
+			
+		/*		//array en bruto (sqlite)
+					while ($row = $unsorted_data->fetchArray(SQLITE3_ASSOC)) {
+						//var_dump(json_encode(array_values($row)));
+						//var_dump(json_encode($row));
+						//var_dump($row);
+						
+						var_dump(json_encode(array_map('utf8_encode',$row)));
+					}
+		*/
+	//	die();
+		}
 	}
+
 }
-
-
 
 
 ?>

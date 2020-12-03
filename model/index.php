@@ -12,6 +12,7 @@ class Model
 {
 	private $db;
 	private $validate;
+	private $config;
 
 	function __construct() 
 	{
@@ -20,11 +21,18 @@ class Model
 			echo $this->db->lastErrorMsg();
 		
 		$this->validate=new Validation();
+		
+		$this->config=$this->db->load_config();	
 	}
 
 	public function __destruct()
 	{ 
 		$this->db->close();
+	}
+
+	function get_config()
+	{
+		return $this->config;
 	}
 
 	function insert_station_data($station,$sensor_name,$time,$sensor_value)
