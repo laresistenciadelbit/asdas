@@ -50,6 +50,9 @@ function generate_chart(x_axis_chart)
 //https://stackoverflow.com/questions/3605214/javascript-add-leading-zeroes-to-date
 function date_pad(n) { return String("0" + n).slice(-2); }
 
+//devuelve la fecha con la hora de inicio de ese día y del fin de ese día
+function calculate_day_start_time(cdate,cday){	return moment( cdate.getFullYear().toString()+'-'+date_pad(cdate.getMonth()+1)+'-'+date_pad(cday) ).format('YYYY-MM-DD HH:mm:ss'); }
+function calculate_day_end_time(cdate,cday)  {	return moment( cdate.getFullYear().toString()+'-'+date_pad(cdate.getMonth()+1)+'-'+date_pad(cday) ).add(1, 'days').subtract(1, 'seconds').format('YYYY-MM-DD HH:mm:ss'); }
 
 //type y status_type es lo que va a definir si obtenemos los datos del sensor o del estado de la estación
 function filter_monthly_data(type,total_elements,date_now,data,status_type)
@@ -64,8 +67,8 @@ function filter_monthly_data(type,total_elements,date_now,data,status_type)
 		for(var j=0;j<days_in_this_month.length;j++)
 		{
 			//calculamos los valores para obtener los datos entre un día y el siguiente
-			var start_day_str = moment( date_now.getFullYear().toString()+'-'+date_pad(date_now.getMonth()+1)+'-'+date_pad(days_in_this_month[j]) ).format('YYYY-MM-DD HH:mm:ss');
-			var end_day_str   = moment( date_now.getFullYear().toString()+'-'+date_pad(date_now.getMonth()+1)+'-'+date_pad(days_in_this_month[j]) ).add(1, 'days').subtract(1, 'seconds').format('YYYY-MM-DD HH:mm:ss');
+			var start_day_str = calculate_day_start_time(date_now,days_in_this_month[j]);//moment( date_now.getFullYear().toString()+'-'+date_pad(date_now.getMonth()+1)+'-'+date_pad(days_in_this_month[j]) ).format('YYYY-MM-DD HH:mm:ss');
+			var end_day_str   = calculate_day_end_time  (date_now,days_in_this_month[j]);//moment( date_now.getFullYear().toString()+'-'+date_pad(date_now.getMonth()+1)+'-'+date_pad(days_in_this_month[j]) ).add(1, 'days').subtract(1, 'seconds').format('YYYY-MM-DD HH:mm:ss');
 			//tomamos los datos desde el principio al final del día
 			var current_day_data=_.filter(data[i], function(o) {if( o.time>start_day_str && o.time<end_day_str ) return o; } );
 			//var current_day_data=_.filter(data[i], function(o) {if( (o.time>start_day_str && o.time<end_day_str) || (o.time>start_day_str && o.time<end_day_str && type=='status_value' && o.status_name==status_type ) ) return o; } );

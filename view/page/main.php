@@ -15,7 +15,7 @@ if (!defined('FROM_INDEX')) die();
                 <p>Estaciones registradas</p>
               </div>
               <div class="icon">
-                <i class="ion ion-bag"></i>
+                <i class="ion ion-stats-bars"></i>
               </div>
               <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
@@ -30,7 +30,7 @@ if (!defined('FROM_INDEX')) die();
                 <p>Estaciones online</p>
               </div>
               <div class="icon">
-                <i class="ion ion-stats-bars"></i>
+                <i class="ion ion-wifi"></i>
               </div>
               <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
@@ -45,7 +45,7 @@ if (!defined('FROM_INDEX')) die();
                 <p>Sensores registrados</p>
               </div>
               <div class="icon">
-                <i class="ion ion-person-add"></i>
+                <i class="ion ion-thermometer"></i>
               </div>
               <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
@@ -60,7 +60,7 @@ if (!defined('FROM_INDEX')) die();
                 <p>Baterías en nivel crítico</p>
               </div>
               <div class="icon">
-                <i class="ion ion-pie-graph"></i>
+                <i class="ion ion-battery-low"></i>
               </div>
               <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
@@ -86,8 +86,7 @@ if (!defined('FROM_INDEX')) die();
 							  title="Collapse">
 						<i class="fas fa-minus"></i>
 					  </button>
-					  <button 
-							  id="map_maximize"
+					  <button
 							  type="button"
 							  class="btn btn-sm"
 							  data-card-widget="maximize"

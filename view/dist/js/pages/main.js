@@ -6,7 +6,7 @@
 	\	to_date					 -> string  -> fecha de la que tomaremos el día para mostrarlo en la gráfica (si no, será el día actual)
 	\	online_threshold_minutes -> numeric -> minutos de margen para declarar si una estación está online o no (es decir, si recibimos datos cada 5 minutos, lo suyo es ponerle el límite ligeramente mayor de 5 mintuos.
 */
-function main(daily_charts,fm,to_month,to_date,online_threshold_minutes,status_name) {
+function main(daily_charts,fm,to_month,to_date,online_threshold_minutes,status_name,map_content) {
   'use strict'
 	/* -- Date management -- */ 
 	var date_now;	//día y hora actual, a menos que seleccionemos una diferente
@@ -161,7 +161,7 @@ $('.knob').knob()
 /* OSM MAP  */
 if(use_map)
 {
-	render_map(true);
+	render_map(/*true*/);
 	
 	//obtenemos coordenadas
 	
@@ -171,9 +171,33 @@ if(use_map)
 	{
 		station_locations[i]=new Array();
 		var station_by_time=_.groupBy(data_by_station[i],"time");
-		var date_aux=Object.entries(station_by_time)[i][0];
 		var station_by_time_values=Object.values(station_by_time);
+		var date_aux=Object.entries(station_by_time)[i][0];
 		
+//console.log(" "+i+" : ");	
+//console.log(station_by_time);	
+
+		if(daily_charts)
+		{
+			var start_day_str = calculate_day_start_time( date_now,date_now.getDate() );
+			var end_day_str   = calculate_day_end_time  ( date_now,date_now.getDate() );
+		} else {
+			var start_day_str = calculate_day_start_time( date_now,1 );
+			var end_day_str   = calculate_day_end_time  ( date_now, daysInMonth( date_now.getMonth(),date_now.getFullYear() ) );
+		}
+//		station_by_time=_.filter(station_by_time, function(o) { console.log(o); if( Object.values(o[0])>start_day_str && Object.values(o[0])<end_day_str ) return o; } );
+
+		
+		
+//console.log(station_by_time);
+		for(var j=0;j<Object.keys(station_by_time).length;j++)
+		{
+//			console.log( "start time: "+start_day_str+" / object time: "+ Object.keys(station_by_time)[j]  );
+			if( !(start_day_str < Object.keys(station_by_time)[j] && end_day_str > Object.keys(station_by_time)[j]) )
+				station_by_time_values[j]='';//delete station_by_time[j];
+		}
+//console.log(station_by_time);		
+//console.log(station_by_time_values);		
 		for(var j=0;j<station_by_time_values.length;j++)
 		{
 			var lat_found=false;
@@ -204,12 +228,16 @@ if(use_map)
 		}
 	}
 	
+	map_content=new Array(station_locations.length); //almacenaremos marcadores y rutas aquí
+	
+	//dibujamos marcadores y rutas con las coordenadas obtenidas
 	for(var i=0;i<station_locations.length;i++)
 	{
+		map_content[i]=new Object();
 		if(station_locations[i].length > 0)
 		{	//https://leafletjs.com/reference-1.7.1.html#marker
 			var popup_marker_message="<center><b>"+station_names[i]+"</b><br>"+station_locations[i][0][0]+"</center>";
-			new L.Marker([ station_locations[i][0][1], station_locations[i][0][2] ], {title:station_names[i]}, {opacity:0.8} ).bindPopup(popup_marker_message).openPopup().addTo(leaflet_map);	//tomamos el primer array [0] de cada estación, ya que es el elemento con la última actualización de ubicación
+			map_content[i].marker=new L.Marker([ station_locations[i][0][1], station_locations[i][0][2] ], {title:station_names[i]}, {opacity:0.8} ).bindPopup(popup_marker_message).openPopup().addTo(leaflet_map);	//tomamos el primer array [0] de cada estación, ya que es el elemento con la última actualización de ubicación
 			
 			//date: station_locations[i][0]
 			//name: station_names[i]
@@ -222,7 +250,7 @@ if(use_map)
 					point_list[j]=new L.LatLng(station_locations[i][j][1],station_locations[i][j][2]);
 				}
 				var randcolor = '#'+Math.random().toString(16).substr(2,6); //https://stackoverflow.com/questions/1484506/random-color-generator
-				new L.Polyline( point_list,{color:randcolor,weight:3,opacity:0.7,smoothFactor:1} ).addTo(leaflet_map);
+				map_content[i].polyline=new L.Polyline( point_list,{color:randcolor,weight:3,opacity:0.7,smoothFactor:1} ).addTo(leaflet_map);
 			}
 		}
 	}
