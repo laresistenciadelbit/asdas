@@ -1,0 +1,166 @@
+/* cabecera  */
+#containerCab{margin:0 auto;width:80em;position:relative;background:#FFF;color:#292a25;}
+#cabecera {height:135px;margin:0;position:relative;width:80em;background-color:#082b3e;}
+#cabecera h1#logo {display:inline;float:left;}
+/* #cabecera h1#logo a{display:block;height:5.8em;width:21.08em;} */
+#cabecera h1#logo img{margin-top:-1px;position: relative;left: 35%;}  
+#cabecera h1#logo a span{display:none;}
+
+#cabecera{width: 100%}
+#cabecera h1#logo {float: none}
+#cabecera h1#logo img { max-width: 100%}
+
+
+
+#content-persona{padding-top: 3em;padding-bottom: 2em;font-family:Arial}
+#content-persona p{font-family:Arial}
+
+.entry-content #content-persona .persona-izq{
+		width: 100%;
+		padding:0;
+		margin-bottom:1em;
+		text-align: left;
+	}
+.entry-content #content-persona .persona-dcha{
+		width: 100%;
+		margin-left:0
+}
+#content-total .entry-content{width:auto}
+#content-total{width: 100%;float:left}
+#content-total .entry-content{text-align:left;margin: 0.83em 0.45em 0.83em 1.9em;float: left;width: 78.35em;}
+#content-total .entry-content .menu-segundos{width:auto;}
+#content-total #titulo-contenido {width:98%}
+#content-total #titulo-contenido  h2{width:100%}
+#content-total #titulo-contenido .menu-segundos{width:100%}
+
+/* Ficha Persona */
+
+
+#content-persona{padding-top: 3em;padding-bottom: 2em;font-family:"Humanist777",Arial}
+#content-persona p{font-family:"Humanist777",Arial}
+
+.persona-izq{text-align:right;float: left;width: 32%;padding-right: 5em}
+.entry-content .persona-izq{padding-right: 3em}
+.persona-izq .nom{font-family:"Humanist777-Bold",Arial;font-size: 1.5em;color: #1c3651}
+.persona-izq .afiliacio{font-size: 1.2em; color: #1c3651;}
+.persona-dcha{float: left;text-align: left;width: 59%}
+.entry-content .persona-dcha{width:62.5%}
+.bio-titol{width:95%;background: #c6d6e6 none repeat scroll 0 0;float:left;padding-left:0.5em;color:#182e4c;box-sizing:border-box;cursor: pointer}
+.bio-info{margin-top:1em}
+.bio-info ul{list-style: outside none none}
+.bio-info ul li {background: #fff url("boton-flecha-r.gif") no-repeat scroll left 0.86em;padding: 3px 0 3px 1.25em}
+.msbio.bio-info p {
+    margin-bottom: 1em;
+    text-align: justify;
+}
+.msbio.bio-info a {
+    color: #0190a2;
+}
+.persona-dire{border-bottom:0.2em solid #dde3e4;padding: 0.5em 0;margin-left: 5em}
+.entry-content .persona-dire{margin:0}
+.persona-izq img{width:160px}
+.persona-icono img{width:auto;margin:0 0.5em}
+.persona-icono-rs img{width:auto;margin:0.2em}
+.caja-flecha{background: #c4cdd0 none repeat scroll 0 0;color: #fff;margin-left: 0.1em;padding: 0.1em 0.5em;display:inline-block;height: 1.3em;width: 0.7em}
+.caja-flecha i{display: inherit}
+.caja-flecha a, .caja-flecha a:hover{color: #fff}
+.tuto{width: 100%}
+.tuto .titulo{background-color: #e5f5f5}
+.asig{width: 100%}
+
+/* Plantilla LISTADO Ficha de Personas*/
+
+.caja-lista-foto-persona {
+    width: 80px;
+    overflow: hidden;
+}
+
+.caja-lista-foto-persona img {
+    width: 50%;
+	margin-left:1.5em !important;
+	margin-right:0em !important;
+	
+}
+
+.persona-lista-dire{padding: 0.5em 0;margin-left: 0em}
+.persona-lista-dire-noinfo{padding: 0.5em 0;margin-left: 0em;text-align: center;}
+.persona-lista-dire p {
+    padding-bottom: 0em;
+}
+.persona-lista-dire-noinfo p {
+    padding: 0 0 0 0;
+}
+table.listable td {
+    border-bottom: 1px solid #FFFFFF;
+    border-left: 0px solid #FFFFFF;
+    border-right: 0px solid #FFFFFF;
+    padding: 7px 10px 7px;
+	vertical-align: center;
+	
+}
+
+#content-tres-columnas table.listable td {
+	padding:12px
+}
+
+table.listable  {
+	margin-bottom: 2.0em;
+    width: 100%;
+}
+
+.listable tbody tr:nth-child(odd) {
+   background-color: #F2F2F2;
+}
+
+table.listable caption {
+	padding: 0.83em 0 0;
+    color: #333;
+    font-family: Arial;
+    font-size: 1.1em;
+    text-align: left;
+    font-weight: bold;
+}
+
+
+div.nombre-persona p { 
+padding: 0.0em 0;
+font-weight: bold;    
+text-transform: uppercase;
+}
+
+.entry-content-listado {
+width:100%; 
+padding: 2.0em 0.0em 2.0em 3.5em;
+}
+
+
+.caja-fitxa-persona {
+	width: 166px;
+    display: inline-block;
+    padding-bottom: 1.5em;
+    vertical-align: top;
+}
+
+.caja-foto-persona {
+    width: 160px;
+    /*height: 160px;*/
+    overflow: hidden;
+	border: 1px solid #f2f2f2;
+}
+.caja-foto-persona img {
+    width: 100%;
+	margin-left:0em !important;
+	margin-right:0em !important;
+}
+
+	div.caja-fitxa-persona:nth-of-type(4n+2) {
+		margin: 0em 0.5em 0em 0.5em;
+	}
+	div.caja-fitxa-persona:nth-of-type(4n+4) {
+		margin: 0em 0.0em 0em 0.0em;
+	}
+	div.caja-fitxa-persona:nth-of-type(4n+3) {
+		margin: 0em 0.5em 0em 0.5em;
+	}
+
+	

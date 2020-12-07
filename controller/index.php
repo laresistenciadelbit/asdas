@@ -2,7 +2,7 @@
 if (!defined('FROM_INDEX')) die();
 
 include_once('model/index.php');
-$model=new Model();
+$model=new Model($db_conf);
 
 function isValidJSON($str) {
    json_decode($str);
@@ -15,75 +15,57 @@ $json_params = file_get_contents("php://input");
 if (strlen($json_params) > 0 && isValidJSON($json_params))
 {
 	if(isset($json_params['sensor_name']))
-		$model->insert_station_data($json_params['station_id'],$json_params['sensor_name'],$json_params['time'],$json_params['sensor_val']);
+		$write_status=$model->insert_station_data($json_params['station_id'],$json_params['sensor_name'],$json_params['time'],$json_params['sensor_val']);
 	else
 		if(isset($json_params['status_name']))
-			$model->insert_station_data($json_params['station_id'],$json_params['status_name'],$json_params['time'],$json_params['status_val']);
+			$write_status=$model->insert_station_aditional_data($json_params['station_id'],$json_params['status_name'],$json_params['time'],$json_params['status_val']);
 }
 else //manejamos las peticiones del usuario
 {
-	$stations=$model->get_station_names();
-	$config=$model->get_config();
-	
-	$use_map=false;	// <- activa el script del api de mapas de osm (por defectro falso, luego se reescribe si es necesario)
+	//manejo de peticiones de escritura de configuración
+	if(isset($_GET['w']) ) //petición de escritura de configuración de la web
+		if( isset($_GET['pass']) && isset($_GET['fm']) && isset($_GET['online_threshold_minutes']) && isset($_GET['primary_sensor']) && isset($_GET['primary_status'])  )
+		{
+			if($model->save_config($_GET['pass'],$_GET['fm'],$_GET['online_threshold_minutes'],$_GET['primary_sensor'],$_GET['primary_status']))
+				$write_status="<span style='color:green;'>Configuración guardada</span>";
+			else
+				$write_status="<span style='color:red;'>Error al guardar la configuración</span>";
+		}	
 
-	if(isset($_GET['s']))
+	//configuración de la vista
+	if(!isset($write_status))	//si no se hizo una petición de escritura de configuración, o si se hizo, pero ésta falló
 	{
-		$current_station=$_GET['s'];
-		$current_page=$_GET['s'];
-		$current_view='sensor';
-		$use_map=true;
+		$stations=$model->get_station_names();
+		$config=$model->get_config();
 		
-	}
-	else
-	{
-		if(isset($_GET['c']))
-		{
-			$current_page="Contacto";
-			$current_view='contact';
-		}
-		else
-		{
-			$current_page="Página principal";
-			$current_view='main';
-			$use_map=true;
-			$unsorted_data=$model->get_all();
-			
-			// https://stackoverflow.com/questions/20694317/json-encode-function-special-characters
-		/*	//mysql data to one array
-			$array=array();
-			while($row = $result->fetch_array(MYSQL_ASSOC))
-			{
-				# Converting each column to UTF8
-				$row = array_map('utf8_encode', $row);
-				array_push($array,$row);
-			}
-			json_encode($array);
-		*/
-			
-		/*	// sqlite data to one array
-				$array=array();
-				while($row = $unsorted_data->fetchArray(SQLITE3_ASSOC))
-				{
-					$row = array_map('utf8_encode', $row);
-					array_push($array,$row);
-				}
-				echo json_encode($array);
-		*/
-			
-		/*		//array en bruto (sqlite)
-					while ($row = $unsorted_data->fetchArray(SQLITE3_ASSOC)) {
-						//var_dump(json_encode(array_values($row)));
-						//var_dump(json_encode($row));
-						//var_dump($row);
-						
-						var_dump(json_encode(array_map('utf8_encode',$row)));
-					}
-		*/
-	//	die();
-		}
-	}
+		$use_map=false;	// <- activa el script del api de mapas de osm (por defectro falso, luego se reescribe si es necesario)
 
+		if(isset($_GET['p']))
+			$current_view=$_GET['p'];
+		else
+			$current_view="main";
+			
+		switch($current_view)
+		{
+			case 'admin':
+				$current_page="Administración";
+			break;
+			case 'station':
+				$current_station=$_GET['s'];
+				$current_page=$_GET['s'];
+				$use_map=true;		
+			break;
+			case 'contact':
+				$current_page="Contacto";
+			break;
+			default:
+				$current_page="Página principal";
+				//$current_view='main';
+				$use_map=true;
+				$unsorted_data=$model->get_all();
+		}
+
+	}
 }
 
 

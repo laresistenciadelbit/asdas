@@ -1,0 +1,11 @@
+.form-group {margin-bottom: 20px !important;}
+p {line-height:0.9}
+.admin-login {
+padding: 20px;
+border-radius: 10px;
+background-color: #B8C8D8;
+margin-right: 82%;
+margin-top : 15px;
+margin-left: 15px;
+}
+.config-margin{margin-left:7px;}

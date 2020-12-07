@@ -14,9 +14,9 @@ class Model
 	private $validate;
 	private $config;
 
-	function __construct() 
+	function __construct($db_conf) 
 	{
-		$this->db = new Mydb();
+		$this->db = new Mydb($db_conf);
 		if(!$this->db)
 			echo $this->db->lastErrorMsg();
 		
@@ -81,6 +81,31 @@ class Model
 	function get_station_names()
 	{
 		return $this->db->get_station_names();
+	}
+	
+	function save_config($pass,$fm,$online_threshold_minutes,$primary_sensor,$primary_status)
+	{//if(is_null($online_threshold_minutes)) echo 'WTFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF';die();
+		$valid=true;
+		$ret=false;
+		if(!$this->validate->str($pass))
+			$valid=false;
+		if(!$this->validate->onetothousand($fm) && $fm!="" )
+			$valid=false;
+//if($fm="") $fm=NULL;
+		if(!$this->validate->onetothousand($online_threshold_minutes))
+			$valid=false;
+		if(!$this->validate->str($primary_sensor))
+			$valid=false;
+		if(!$this->validate->str($primary_status))
+			$valid=false;
+		
+		if($valid)
+			$ret=$this->db->set_config($pass,$fm,$online_threshold_minutes,$primary_sensor,$primary_status);
+		
+		if($ret)
+			return true;
+		else
+			return false;
 	}
 }
    

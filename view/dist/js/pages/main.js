@@ -6,8 +6,14 @@
 	\	to_date					 -> string  -> fecha de la que tomaremos el día para mostrarlo en la gráfica (si no, será el día actual)
 	\	online_threshold_minutes -> numeric -> minutos de margen para declarar si una estación está online o no (es decir, si recibimos datos cada 5 minutos, lo suyo es ponerle el límite ligeramente mayor de 5 mintuos.
 */
-function main(daily_charts,fm,to_month,to_date,online_threshold_minutes,status_name,map_content) {
+function main(daily_charts,fm,to_month,to_date,online_threshold_minutes,primary_sensor,primary_status) {
   'use strict'
+  
+	if( primary_sensor=="" )	//si no le hemos pasado un sensor principal cogemos el primero que encontremos
+		primary_sensor=unsorted_data[0].sensor_name;
+	if( primary_status=="" )	//si no le hemos pasado un sensor principal cogemos el primero que encontremos
+		primary_status=unsorted_data[0].status_name;
+			
 	/* -- Date management -- */ 
 	var date_now;	//día y hora actual, a menos que seleccionemos una diferente
 	if(to_date!='')
@@ -88,18 +94,29 @@ function main(daily_charts,fm,to_month,to_date,online_threshold_minutes,status_n
 
 	/* status chart */
 		
-		var status_filtered_data=filter_monthly_data('status_value',data_by_station.length,date_now,data_by_station,status_name);
+		var status_filtered_data=filter_monthly_data('status_value',data_by_station.length,date_now,data_by_station,primary_status);
 
 
 	/* 3 knobs */
+	
 		//online stations (stations online/offline)
 		  $("#online-stations-knob").val(online_stations);
+		  
 		//avg batery level
-		  //obtener la media de todas las baterías que hay online ahora mismo.
-//		  $("#"battery-knob").
+		  //obtener la media de todas las baterías.
+		  var battery_mean=_.filter(unsorted_data,{status_name: primary_status});
+		  battery_mean=_.meanBy(battery_mean,(a) => +(a.status_value) );	//+() obligatorio para convertirlo en float !!!
+		  $("#battery-knob").val(battery_mean.toFixed(2));
+		  $(".main-sensor").html(primary_status);
+
 		//avg main sensor
 		  //obtener la media de todos los sensores principales
-//		  $("#"sensor-avg-knob").
+		  var sensor_mean=_.filter(unsorted_data,{sensor_name: primary_sensor});
+		  var sensor_mean=_.meanBy(sensor_mean,(a) => +(a.sensor_value) );
+		  $("#sensor-avg-knob").val(sensor_mean.toFixed(2));
+		  $(".main-sensor").html(primary_sensor);
+
+
 
 //////////////////////////////////////////////////////////////////////////	
   
@@ -161,7 +178,7 @@ $('.knob').knob()
 /* OSM MAP  */
 if(use_map)
 {
-	render_map(/*true*/);
+	//render_map(/*true*/);
 	
 	//obtenemos coordenadas
 	
@@ -237,7 +254,7 @@ if(use_map)
 		if(station_locations[i].length > 0)
 		{	//https://leafletjs.com/reference-1.7.1.html#marker
 			var popup_marker_message="<center><b>"+station_names[i]+"</b><br>"+station_locations[i][0][0]+"</center>";
-			map_content[i].marker=new L.Marker([ station_locations[i][0][1], station_locations[i][0][2] ], {title:station_names[i]}, {opacity:0.8} ).bindPopup(popup_marker_message).openPopup().addTo(leaflet_map);	//tomamos el primer array [0] de cada estación, ya que es el elemento con la última actualización de ubicación
+			map_content[i].marker=new L.Marker([ station_locations[i][0][1], station_locations[i][0][2] ], {title:station_names[i]}, {opacity:0.8} ).bindPopup(popup_marker_message).openPopup();//.addTo(leaflet_map);	//tomamos el primer array [0] de cada estación, ya que es el elemento con la última actualización de ubicación
 			
 			//date: station_locations[i][0]
 			//name: station_names[i]
@@ -254,6 +271,8 @@ if(use_map)
 			}
 		}
 	}
+	
+	render_map(map_content);
 }
 
 

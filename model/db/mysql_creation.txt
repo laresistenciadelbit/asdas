@@ -1,0 +1,26 @@
+DROP TABLE IF EXISTS station_sensors;
+CREATE TABLE station_sensors (
+station VARCHAR(40)  NULL,
+sensor_name VARCHAR(40)  NULL,
+TIME DATETIME  NULL,
+sensor_value FLOAT  NULL,
+PRIMARY KEY (station,sensor_name,TIME)
+)
+DROP TABLE IF EXISTS station_status;
+CREATE TABLE station_status (
+station VARCHAR(40)  NULL,
+status_name VARCHAR(40)  NULL,
+TIME DATETIME  NULL,
+status_value FLOAT  NULL,
+PRIMARY KEY (station,status_name,TIME)
+)
+DROP TABLE IF EXISTS config;
+CREATE TABLE config (
+pass VARCHAR(60)  NULL,
+fm VARCHAR(5)  NULL,
+online_threshold_minutes VARCHAR(5)  NULL,
+primary_sensor VARCHAR(40)  NULL,
+primary_status VARCHAR(30)  NULL
+)
+
+insert into config values ("","",15,"","");

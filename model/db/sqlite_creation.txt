@@ -14,6 +14,13 @@ CREATE TABLE [station_status] (
 PRIMARY KEY ([station],[status_name],[time])
 )
 
+CREATE TABLE [config] (
+[pass] VARCHAR(60)  NULL,
+[fm] VARCHAR(5)  NULL,
+[online_threshold_minutes] VARCHAR(5)  NULL,
+[primary_sensor] VARCHAR(40)  NULL,
+[primary_status] VARCHAR(30)  NULL
+)
 
 insert into station_sensors values ('uv','temperatura','2020-08-22 13:05:12',22.87);
 insert into station_sensors values ('uv','temperatura','2020-08-22 13:10:12',22.92);
@@ -108,9 +115,16 @@ insert into station_sensors values ('pont de fusta','temperatura','2020-08-22 08
 insert into station_sensors values ('pont de fusta','temperatura','2020-08-22 08:45:20',15.47);
 insert into station_sensors values ('pont de fusta','temperatura','2020-08-22 08:55:20',17.93);
 
-insert into station_status values ('pont de fusta','temperatura','2020-08-22 08:05:20',16.05);
-insert into station_status values ('pont de fusta','temperatura','2020-08-22 08:15:20',13.33);
-insert into station_status values ('pont de fusta','temperatura','2020-08-22 08:25:20',12.17);
-insert into station_status values ('pont de fusta','temperatura','2020-08-22 08:35:20',16.82);
-insert into station_status values ('pont de fusta','temperatura','2020-08-22 08:45:20',18.54);
-insert into station_status values ('pont de fusta','temperatura','2020-08-22 08:55:20',22.56);
+insert into station_status values ('pont de fusta','lat','2020-08-22 08:05:20',39.480490);
+insert into station_status values ('pont de fusta','lat','2020-08-22 08:15:20',39.480353);
+insert into station_status values ('pont de fusta','lat','2020-08-22 08:25:20',39.480200);
+insert into station_status values ('pont de fusta','lat','2020-08-22 08:35:20',39.480100);
+insert into station_status values ('pont de fusta','lat','2020-08-22 08:45:20',39.479490);
+insert into station_status values ('pont de fusta','lat','2020-08-22 08:55:20',39.478962);
+
+insert into station_status values ('pont de fusta','lon','2020-08-22 08:05:20',-0.373655);
+insert into station_status values ('pont de fusta','lon','2020-08-22 08:15:20',-0.373755);
+insert into station_status values ('pont de fusta','lon','2020-08-22 08:25:20',-0.373955);
+insert into station_status values ('pont de fusta','lon','2020-08-22 08:35:20',-0.374355);
+insert into station_status values ('pont de fusta','lon','2020-08-22 08:45:20',-0.374655);
+insert into station_status values ('pont de fusta','lon','2020-08-22 08:55:20',-0.374706);
