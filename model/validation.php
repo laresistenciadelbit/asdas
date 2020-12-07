@@ -27,4 +27,12 @@ class Validation
 		else 
 			return false;
 	}
+	
+	function onetothousand($n)
+	{
+		if( $n>0 && $n<=1000 )
+			return true;
+		else 
+			return false;
+	}
 }

@@ -1,36 +1,40 @@
 <?php
 if (!defined('FROM_INDEX')) die();
 
-class Mydb extends SQLite3 
+class Mydb extends mysqli 
 {
-	function __construct($db_conf) 
-	{
-		$this->open('model/db/'.$db_conf);
-	}
+	function __construct($db_conf) {
+        parent::__construct($db_conf[0], $db_conf[1], $db_conf[2], $db_conf[3]);
+		if ($this->connect_errno != 0)
+		{
+			echo 'error al conectar con la base de datos MYSQL';
+			die();
+		}
+    }
 	
 	function load_config()
 	{
 		$ret = $this->query("SELECT * FROM config;");
 		if(!$ret && DEBUG) {
-			echo $this->lastErrorMsg();
+			echo $this->error();
 		}
-		while($row = $ret->fetchArray(SQLITE3_ASSOC) ){$config=$row;}
+		while($row = $ret->fetch_assoc() ){$config=$row;}
 		return $config;
 	}
 	
 	function insert_station_data($station,$sensor_name,$time,$sensor_value)
 	{
-		$ret = $this->exec("INSERT INTO station_sensors values ('".$station."','".$sensor_name."','".$sensor_value."','".$time."');");
+		$ret = $this->query("INSERT INTO station_sensors values ('".$station."','".$sensor_name."','".$sensor_value."','".$time."');");
 		if(!$ret && DEBUG) {
-			echo $this->lastErrorMsg();
+			echo $this->error();
 		}
 	}
 	
 	function insert_station_aditional_data($station,$status_name,$time,$status_value)
 	{
-		$ret = $this->exec("INSERT INTO station_status values ('".$station."','".$status_name."','".$time."','".$status_value."');");
+		$ret = $this->query("INSERT INTO station_status values ('".$station."','".$status_name."','".$time."','".$status_value."');");
 		if(!$ret && DEBUG) {
-			echo $this->lastErrorMsg();
+			echo $this->error();
 		}
 	}
 	
@@ -44,12 +48,12 @@ class Mydb extends SQLite3
 							LEFT JOIN station_status st USING(station,time) 
 							WHERE station is null and time is null;");
 		if(!$ret && DEBUG) {
-			echo $this->lastErrorMsg();
+			echo $this->error();
 		}
 		
 		// https://stackoverflow.com/questions/20694317/json-encode-function-special-characters
 		$array=array();
-		while($row = $ret->fetchArray(SQLITE3_ASSOC))
+		while($row = $ret->fetch_assoc())
 		{
 			$row = array_map('utf8_encode', $row);
 			array_push($array,$row);
@@ -67,7 +71,7 @@ class Mydb extends SQLite3
 		WHERE station is null and time is null;
 		");
 		if(!$ret && DEBUG) {
-			echo $this->lastErrorMsg();
+			echo $this->error();
 		}
 		return $ret;
 	}
@@ -76,11 +80,11 @@ class Mydb extends SQLite3
 	{
 		$ret = $this->query("SELECT station from station_sensors group by station;");
 		if(!$ret && DEBUG) {
-			echo $this->lastErrorMsg();
+			echo $this->error();
 		}
 		
 		$array=array();
-		while($row = $ret->fetchArray(SQLITE3_ASSOC))
+		while($row = $ret->fetch_assoc())
 		{	
 			$row=array_map('utf8_encode', $row);
 			array_push($array,$row['station']);
@@ -97,12 +101,12 @@ class Mydb extends SQLite3
 			$sql_query=$sql_query."pass='".$pass."' ,";
 		$sql_query=$sql_query." fm='".$fm."', online_threshold_minutes='".$online_threshold_minutes."', primary_sensor='".$primary_sensor."', primary_status='".$primary_status."';");
 		
-		$ret = $this->exec($sql_query);
+		$ret = $this->query($sql_query);
 		*/
 	
-		$ret = $this->exec("UPDATE config set pass='".$pass."' , fm='".$fm."', online_threshold_minutes='".$online_threshold_minutes."', primary_sensor='".$primary_sensor."', primary_status='".$primary_status."';");
+		$ret = $this->query("UPDATE config set pass='".$pass."' , fm='".$fm."', online_threshold_minutes='".$online_threshold_minutes."', primary_sensor='".$primary_sensor."', primary_status='".$primary_status."';");
 		if(!$ret && DEBUG ) {
-			echo $this->lastErrorMsg();
+			echo $this->error();
 		}
 		if($ret)
 			return true;

@@ -12,7 +12,7 @@ if (!defined('FROM_INDEX')) die();
         <a href="./index.php" class="nav-link">Inicio</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="./index.php?c" class="nav-link">Contacto</a>
+        <a href="./index.php?p=contact" class="nav-link">Contacto</a>
       </li>
     </ul>    
   </nav>

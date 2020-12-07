@@ -3,7 +3,7 @@ var map_coordinates=[39.469864, -0.376361];
 var use_map=true;
 var leaflet_map = L.map("map_osm");
 
-function render_map(/*init*/)
+function render_map(map_content)
 {	
 //	if(!init)	//re-renderizamos al pulsar el botón si no es el renderizado inicial (ahora lo renderizamos siempre para que al cambiar el calendario renueve los marcadores de ubicación del mapa
 //	{
@@ -29,8 +29,18 @@ function render_map(/*init*/)
 		//var layer = new L.TileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png");
 		
 		leaflet_map.addLayer(layer);
+		
+		
+		for(var i=0;i<map_content.length;i++)
+		{
+			if( map_content[i].hasOwnProperty('marker') )
+				map_content[i].marker.addTo(leaflet_map);
+			if( map_content[i].hasOwnProperty('polyline') )
+				map_content[i].polyline.addTo(leaflet_map);
+		}//console.log(map_content);
+		
 	
 	}, 10);
 }
 
-$(document).on('click', '#map_maximize', function() { render_map(/*false*/); });
+$(document).on('click', '#map_maximize', function() { render_map(map_content); });

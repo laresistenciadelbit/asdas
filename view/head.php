@@ -35,4 +35,10 @@ if (!defined('FROM_INDEX')) die();
 	}
 ?>
   
+<?php 
+	/*--LOAD CSS FROM THE CURRENT VIEW (if they exist)--*/
+	$current_view_css_file='view/dist/css/pages/'.$current_view.'.css';
+	if(is_file($current_view_css_file))
+		echo '<link rel="stylesheet" href="'.$current_view_css_file.'">';
+?>
 </head>
