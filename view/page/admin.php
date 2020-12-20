@@ -3,7 +3,7 @@ if (!defined('FROM_INDEX')) die();
 ?>
 
 <?php
-if( $config['pass']=='' || ( isset($_GET['pass']) && $_GET['pass']==$config['pass'] ) )
+if( $config['pass']=='' || ( isset($_GET['pass']) && $_GET['pass']==htmlspecialchars_decode($config['pass']) ) )
 { ?>
 
 <!-- Main content -->

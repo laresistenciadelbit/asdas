@@ -15,10 +15,10 @@ $json_params = file_get_contents("php://input");
 if (strlen($json_params) > 0 && isValidJSON($json_params))
 {
 	if(isset($json_params['sensor_name']))
-		$write_status=$model->insert_station_data($json_params['station_id'],$json_params['sensor_name'],$json_params['time'],$json_params['sensor_val']);
+		$simple_output=$model->insert_station_data($json_params['station_id'],$json_params['sensor_name'],$json_params['time'],$json_params['sensor_val']);
 	else
 		if(isset($json_params['status_name']))
-			$write_status=$model->insert_station_aditional_data($json_params['station_id'],$json_params['status_name'],$json_params['time'],$json_params['status_val']);
+			$simple_output=$model->insert_station_aditional_data($json_params['station_id'],$json_params['status_name'],$json_params['time'],$json_params['status_val']);
 }
 else //manejamos las peticiones del usuario
 {
@@ -27,13 +27,16 @@ else //manejamos las peticiones del usuario
 		if( isset($_GET['pass']) && isset($_GET['fm']) && isset($_GET['online_threshold_minutes']) && isset($_GET['primary_sensor']) && isset($_GET['primary_status'])  )
 		{
 			if($model->save_config($_GET['pass'],$_GET['fm'],$_GET['online_threshold_minutes'],$_GET['primary_sensor'],$_GET['primary_status']))
-				$write_status="<span style='color:green;'>Configuración guardada</span>";
+				$simple_output="<span style='color:green;'>Configuración guardada</span>";
 			else
-				$write_status="<span style='color:red;'>Error al guardar la configuración</span>";
-		}	
+				$simple_output="<span style='color:red;'>Error al guardar la configuración</span>";
+		}
+		
+	if(isset($_GET['s']) )	//recibimos peticiones por ajax para obtener los datos de una fecha concreta
+		$simple_output=$model->get_all($_GET['s']);
 
 	//configuración de la vista
-	if(!isset($write_status))	//si no se hizo una petición de escritura de configuración, o si se hizo, pero ésta falló
+	if(!isset($simple_output))	//si no se hizo una petición de escritura de configuración, o si se hizo, pero ésta falló
 	{
 		$stations=$model->get_station_names();
 		$config=$model->get_config();
@@ -59,7 +62,7 @@ else //manejamos las peticiones del usuario
 				$current_page="Contacto";
 			break;
 			default:
-				$current_page="Página principal";
+				$current_page="Arduino Sim Data Adquisition System";
 				//$current_view='main';
 				$use_map=true;
 				$unsorted_data=$model->get_all();
