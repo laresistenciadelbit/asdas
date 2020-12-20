@@ -4,7 +4,7 @@ var use_map=true;
 var leaflet_map = L.map("map_osm");
 
 function render_map(map_content)
-{	
+{
 //	if(!init)	//re-renderizamos al pulsar el botón si no es el renderizado inicial (ahora lo renderizamos siempre para que al cambiar el calendario renueve los marcadores de ubicación del mapa
 //	{
 		if(	!$("#map_maximize").children(".fas").hasClass("fa-expand") )

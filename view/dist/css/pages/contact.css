@@ -12,7 +12,7 @@
 
 
 
-#content-persona{padding-top: 3em;padding-bottom: 2em;font-family:Arial}
+#content-persona{font-size:1.25vw; padding-top: 3em;padding-bottom: 2em;font-family:Arial}
 #content-persona p{font-family:Arial}
 
 .entry-content #content-persona .persona-izq{
@@ -35,15 +35,11 @@
 
 /* Ficha Persona */
 
-
-#content-persona{padding-top: 3em;padding-bottom: 2em;font-family:"Humanist777",Arial}
-#content-persona p{font-family:"Humanist777",Arial}
-
-.persona-izq{text-align:right;float: left;width: 32%;padding-right: 5em}
+.persona-izq{text-align:right;float: left;width: 36%;padding-right: 5em}
 .entry-content .persona-izq{padding-right: 3em}
 .persona-izq .nom{font-family:"Humanist777-Bold",Arial;font-size: 1.5em;color: #1c3651}
 .persona-izq .afiliacio{font-size: 1.2em; color: #1c3651;}
-.persona-dcha{float: left;text-align: left;width: 59%}
+.persona-dcha{float: left;text-align: left;width: 64%}
 .entry-content .persona-dcha{width:62.5%}
 .bio-titol{width:95%;background: #c6d6e6 none repeat scroll 0 0;float:left;padding-left:0.5em;color:#182e4c;box-sizing:border-box;cursor: pointer}
 .bio-info{margin-top:1em}

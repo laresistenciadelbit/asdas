@@ -1,10 +1,5 @@
-
-
 <?php
-
-
 // insert into station_sensors values ('uv','temperatura','2020-08-22 13:05:12',22.87); cada 5 min, variando +-8 grados  +2 si hora > 11 y < 18 ,  -2 si hora >1 y <6
-
 $uv_temp=17;
 $uv_co2=38.54;
 $uv_batt=70;
@@ -22,11 +17,16 @@ while( $date->format("Y-m-d H:i:s") < "2020-12-01 00:00:00" )
 	
 	$positive=0;$negative=0;
 	if($date->format("H")>1&&$date->format("H")<6)
-		$negative= $date->format("H")/200 + rand(36,40)/100;
+		$negative= $date->format("H")/200 + rand(36,42)/100;
 	if($date->format("H")>11&&$date->format("H")<18)
-		$positive= $date->format("H")/200 + rand(20,26.5)/100;
+		$positive= $date->format("H")/200 + rand(20,28.5)/100;
 
 	$uv_temp+= rand(-10,10)/10 + 0.43*$positive - 0.49*$negative + rand(-50,49.5)/100;
+	if($uv_temp>23)
+		$uv_temp-=rand(10,28)/10 + ($uv_temp-23)*0.2;
+	if($uv_temp<5)
+		$uv_temp+=rand(10,28)/10 + 0.2;;
+	
 	echo "insert into station_sensors values ('uv','temperatura','".$date->format("Y-m-d H:i:s")."',".$uv_temp.");" ;
 echo "<br>";
 	$uv_co2+=rand(-10.5,10.2)/10+rand(-4.5,5)/100;
@@ -44,8 +44,8 @@ echo "<br>";
 	echo "insert into station_status values ('blasco ibañez','battery','".$date->format("Y-m-d H:i:s")."',".($uv_batt-rand(40,60)/10-36.55*(sin( $date->format("H")*4 ))+rand(-200,140)/100 ).");" ;
 echo "<br>";
 	
-	$lat_blasco+=rand(-2,1.7)/100000;
-	$lon_blasco+=rand(-1.8,0.15)/100000;
+	$lat_blasco+=rand(-10,66) /10000000;
+	$lon_blasco+=rand(-195,15)/10000000;
 echo "insert into station_status values ('blasco ibañez','lat','".$date->format("Y-m-d H:i:s")."',".$lat_blasco.");";
 echo "<br>";
 	echo "insert into station_status values ('blasco ibañez','lon','".$date->format("Y-m-d H:i:s")."',".$lon_blasco.");";
@@ -66,8 +66,8 @@ echo "<br>";
 echo "<br>";
 	echo "insert into station_sensors values ('pont de fusta','PM10','".$date->format("Y-m-d H:i:s")."',".($uv_co2+25.84*(sin( $date->format("H")*4 ))+rand(-10,12)/100+rand(-10,10)/100 ).");";
 echo "<br>";
-	$lat_pont+=rand(-2.5,1)/100000;
-	$lon_pont+=rand(-0.5,0.05)/100000;
+	$lat_pont+=rand(-50,30)/10000000;
+	$lon_pont+=rand(-40,15)  /10000000;
 	echo "insert into station_status values ('pont de fusta','lat','".$date->format("Y-m-d H:i:s")."',".$lat_pont.");";
 echo "<br>";
 	echo "insert into station_status values ('pont de fusta','lon','".$date->format("Y-m-d H:i:s")."',".$lon_pont.");";

@@ -3,7 +3,7 @@ if (!defined('FROM_INDEX')) die();
 
 include_once('model/validation.php');
 
-if(DATABASE_TYPE=='sqlite')
+if(DATABASE_TYPE=='sqlite' || DATABASE_TYPE=='sqlite-demo')
 	include_once('model/sqlite.php');
 if(DATABASE_TYPE=='mysql')
 	include_once('model/mysql.php');
@@ -40,12 +40,18 @@ class Model
 		$valid=true;
 		if(!$this->validate->str($station))
 			$valid=false;
+		else
+			$station=htmlspecialchars($station);
 		if(!$this->validate->str($sensor_name))
 			$valid=false;
+		else
+			$sensor_name=htmlspecialchars($sensor_name);
 		if(!$this->validate->time($time))
 			$valid=false;
 		if(!$this->validate->value($sensor_value))
 			$valid=false;
+		//else	(no es necesario)
+		//	$sensor_value=filter_var($sensor_value, FILTER_VALIDATE_FLOAT);
 		
 		if($valid)
 			$this->db->insert_station_data($station,$sensor_name,$time,$sensor_value);
@@ -56,8 +62,12 @@ class Model
 		$valid=true;
 		if(!$this->validate->str($station))
 			$valid=false;
+		else
+			$station=htmlspecialchars($station);
 		if(!$this->validate->str($status_name))
 			$valid=false;
+		else
+			$status_name=htmlspecialchars($status_name);
 		if(!$this->validate->time($time))
 			$valid=false;
 		if(!$this->validate->value($status_value))
@@ -75,7 +85,7 @@ class Model
 	function get_station($station)
 	{
 		if(!$this->validate->str($station))
-			return $this->db->get_station($station);
+			return $this->db->get_station(htmlspecialchars($station));
 	}
 
 	function get_station_names()
@@ -89,6 +99,8 @@ class Model
 		$ret=false;
 		if(!$this->validate->str($pass))
 			$valid=false;
+		else
+			$pass=htmlspecialchars($pass);
 		if(!$this->validate->onetothousand($fm) && $fm!="" )
 			$valid=false;
 //if($fm="") $fm=NULL;
@@ -96,16 +108,17 @@ class Model
 			$valid=false;
 		if(!$this->validate->str($primary_sensor))
 			$valid=false;
+		else
+			$primary_sensor=htmlspecialchars($primary_sensor);
 		if(!$this->validate->str($primary_status))
 			$valid=false;
+		else
+			$primary_status=htmlspecialchars($primary_status);
 		
 		if($valid)
 			$ret=$this->db->set_config($pass,$fm,$online_threshold_minutes,$primary_sensor,$primary_status);
 		
-		if($ret)
-			return true;
-		else
-			return false;
+		return $ret;
 	}
 }
    

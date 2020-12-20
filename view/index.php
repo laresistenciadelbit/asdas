@@ -10,7 +10,13 @@ if (!defined('FROM_INDEX')) die();
 
 <?php include_once('view/nav.php');?>
 
-<?php include_once('view/sidebar.php');?>
+<?php include_once('view/sidebar.php');
+
+if($current_view=='main') //la página principal no mostrará la jerarquía de navegación para que el título tenga más espacio
+	$nav_col_class="container-xl";
+else
+	$nav_col_class="col-sm-6";
+?>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -18,17 +24,26 @@ if (!defined('FROM_INDEX')) die();
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-6">
+          <div class="<?=$nav_col_class?>">
             <h1 class="m-0 text-dark"><?=$current_page?></h1>
           </div><!-- /.col -->
+
+  <?php 
+	    if($current_view!='main')
+	    {
+		  echo '
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="./index.php">Inicio</a></li>
-              <li class="breadcrumb-item active"><?=$current_page?></li>
+              <li class="breadcrumb-item active">'.$current_page.'</li>
             </ol>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
+          </div>
+		  ';
+		} 
+	?>
+  
+        </div>
+      </div>
     </div>
     <!-- /.content-header -->
 

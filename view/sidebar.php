@@ -5,17 +5,17 @@
       <img src="view/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
       <span class="brand-text font-weight-light">ASDAS</span>
-	  <span style="color:#efefef;font-size:9.5px;position:absolute;left:60px;top:31px;">arduino sim data adquisition system</span>
+	  <span style="color:#efefef;font-size:9.5px;position:absolute;left:60px;top:34px;">arduino sim data adquisition system</span>
     </a>
     <!-- Sidebar -->
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="view/dist/img/admin.png" class="img-circle elevation-2" alt="User Image">
+          <a href="./index.php?p=admin"><img src="view/dist/img/gear.png" class="img-circle elevation-2" alt="User Image"></a>
         </div>
         <div class="info">
-          <a href="./index.php?p=admin" class="d-block">Administrador</a>
+          <a href="./index.php?p=admin" class="d-block">Administración</a>
         </div>
       </div>
 
