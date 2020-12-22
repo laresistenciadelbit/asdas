@@ -171,42 +171,10 @@ if (!defined('FROM_INDEX')) die();
           <!-- right col (We are only adding the ID to make the widgets sortable)-->
           <section class="col-lg-5 connectedSortable">
 
-            <!-- MAP -->
-			
-			<div class="card bg-gradient-primary" style="background:#125;">
-				<div class="card-header border-0">
-					<h3 class="card-title">
-					  <i class="fas fa-map-marker-alt mr-1"></i>
-					  Mapa de estaciones
-					</h3>
-					<div class="card-tools">
-					  <button type="button"
-							  class="btn btn-primary btn-sm"
-							  data-card-widget="collapse"
-							  title="Collapse">
-						<i class="fas fa-minus"></i>
-					  </button>
-					  <button 
-							  id="map_maximize"
-							  type="button"
-							  class="btn btn-primary btn-sm"
-							  data-card-widget="maximize"
-							  title="maximize">
-						<i class="fas fa-expand"></i>
-					  </button>
-					</div>
-				</div>
-				<div class="card-body">
-					<!-- OSM MAP -->
-<?php //https://wiki.openstreetmap.org/wiki/Deploying_your_own_Slippy_Map
-		//https://leafletjs.com/
-if($use_map)
-	echo '					<div id="map_osm" style=""></div>'.PHP_EOL;
-?>
-				</div>
-			</div>
 
             <!-- Calendar -->
+
+
             <div class="card bg-gradient-success">
               <div class="card-header border-0">
 
@@ -233,7 +201,43 @@ if($use_map)
               </div>
               <!-- /.card-body -->
             </div>
-            <!-- /.card -->
+			
+			
+			<!-- MAP -->
+			
+			<div class="card bg-gradient-primary" style="background:#125;">
+				<div class="card-header border-0">
+					<h3 class="card-title">
+					  <i class="fas fa-map-marker-alt mr-1"></i>
+					  Mapa de estaciones
+					</h3>
+					<div class="card-tools">
+					  <button type="button"
+							  class="btn btn-primary btn-sm"
+							  data-card-widget="collapse"
+							  title="Collapse">
+						<i class="fas fa-minus"></i>
+					  </button>
+					  <button 
+							  id="map_maximize"
+							  type="button"
+							  class="btn btn-primary btn-sm"
+							  data-card-widget="maximize"
+							  title="maximize">
+						<i class="fas fa-expand"></i>
+					  </button>
+					</div>
+				</div>
+				<div class="card-body">
+					<!-- OSM MAP -->
+					<?php //https://wiki.openstreetmap.org/wiki/Deploying_your_own_Slippy_Map
+							//https://leafletjs.com/
+					if($use_map)
+						echo '					<div id="map_osm" style=""></div>'.PHP_EOL;
+					?>
+				</div>
+			</div>
+
           </section>
           <!-- right col -->
         </div>
