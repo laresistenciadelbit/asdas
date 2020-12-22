@@ -108,6 +108,7 @@ function filter_daily_data(total_elements,fm,date_now,sensor_data)
 		mode_minutes = _.head(_(data_times_numeric_arr).countBy().entries().maxBy(_.last));
 	}
 	//muestras en los minutos del día divididos entre el intervalo entre mediciones (a una medición por minuto tenemos 1 muestra por minuto, que son 1440 muestras en un día)
+
 	var samples = (60*24) / mode_minutes;
 	//recogemos valores de cada muestra desde el día anterior (suele ser cada minuto,2minutos,5minutos,15minutos por eso lo llamamos minutes_from_last_day
 	var minutes_from_last_day=new Array(samples);

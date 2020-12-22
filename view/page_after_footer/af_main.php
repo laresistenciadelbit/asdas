@@ -7,7 +7,7 @@ if($use_map)
 		  <script>let map_content;</script>';
 ?>
 
-<script>var unsorted_data=<?=$unsorted_data?>;
+<script>//var unsorted_data=<?/*=$unsorted_data*/?>;
 
 </script>
 
@@ -16,15 +16,15 @@ if($use_map)
 
 <script>
 //ejecutamos las funciones del main (4 cajas de información, 2 gráficas, mapa, calendario y 3 círulos de información)
-main(false,"<?=$config['fm']?>","","2020-11-30 13:40:00",<?=$config['online_threshold_minutes']?>,"<?=$config['primary_sensor']?>","<?=$config['primary_status']?>");
+main(true,"<?=$config['fm']?>","","2020-11-30"/*moment(date).format('YYYY-MM-DD')*/,<?=$config['online_threshold_minutes']?>,"<?=$config['primary_sensor']?>","<?=$config['primary_status']?>");
 
 //creamos un evento para escuchar el día del calendario
-$('#calendar').on("change.datetimepicker", ({date, oldDate}) => {              
-	main(true,"<?=$config['fm']?>","",moment(date).format('YYYY-MM-DD HH:mm:ss'),<?=$config['online_threshold_minutes']?>,"<?=$config['primary_sensor']?>","<?=$config['primary_status']?>");
+$('#calendar').on("change.datetimepicker", ({date, oldDate}) => {
+	main(true,"<?=$config['fm']?>","",moment(date).format('YYYY-MM-DD'),<?=$config['online_threshold_minutes']?>,"<?=$config['primary_sensor']?>","<?=$config['primary_status']?>");
 });
 
 //creamos un evento para escuchar el mes del calendario
-$('#calendar').on("update.datetimepicker", ({change, viewDate }) => {              
-	main(false,"<?=$config['fm']?>","",moment(viewDate).format('YYYY-MM'),<?=$config['online_threshold_minutes']?>,"<?=$config['primary_sensor']?>","<?=$config['primary_status']?>");
+$('#calendar').on("update.datetimepicker", ({change, viewDate }) => {
+	main(false,"<?=$config['fm']?>",moment(viewDate).format('YYYY-MM'),"",<?=$config['online_threshold_minutes']?>,"<?=$config['primary_sensor']?>","<?=$config['primary_status']?>");
 });
 </script>
