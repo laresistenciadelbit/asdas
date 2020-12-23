@@ -31,10 +31,16 @@ else //manejamos las peticiones del usuario
 			else
 				$simple_output="<span style='color:red;'>Error al guardar la configuración</span>";
 		}
-		
-	if(isset($_GET['s']) )	//recibimos peticiones por ajax para obtener los datos de una fecha concreta
-		$simple_output=$model->get_all($_GET['s']);
 
+	//recibimos peticiones por ajax para obtener los datos de una fecha concreta
+	if(isset($_GET['d']) )	
+	{
+		if(isset($_GET['s']) )
+			$simple_output=$model->get_station($_GET['d'],$_GET['s']);
+		else
+			$simple_output=$model->get_all($_GET['d']);
+	}
+	
 	//configuración de la vista
 	if(!isset($simple_output))	//si no se hizo una petición de escritura de configuración, o si se hizo, pero ésta falló
 	{
@@ -65,7 +71,7 @@ else //manejamos las peticiones del usuario
 				$current_page="Arduino Sim Data Adquisition System";
 				//$current_view='main';
 				$use_map=true;
-				$unsorted_data=$model->get_all();
+				//$unsorted_data=$model->get_all();
 		}
 
 	}

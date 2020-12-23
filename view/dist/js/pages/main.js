@@ -8,21 +8,62 @@
 */
 function main(daily_charts,fm,to_month,to_date,online_threshold_minutes,primary_sensor,primary_status) {
   'use strict'
+
+	var unsorted_data;
+	/* -- Date management -- */ 
+	var date_now;	//día y hora actual, a menos que seleccionemos una diferente
+	var ajax_date;
+	if(to_month!='')
+	{
+		date_now=new Date(to_month);
+		ajax_date=moment(date_now).format('YYYY-MM');
+	}
+	else
+	{
+		if(to_date!='')
+			date_now=new Date(to_date);
+		else
+			date_now=new Date(to_date);
+		
+		ajax_date=moment(date_now).format('YYYY-MM-DD');
+	}	
+	
+	
+	// <!!!>The Calender (Tempus Dominus) //necesario antes del get de ajax, sino, literalmente ejecutaría los listeners del calendario, ya que el get se ejecuta de forma asínrona
+	$('#calendar').datetimepicker({
+		locale: moment.locale('es'), //hay que ejecutar el js del locale deseado (https://tempusdominus.github.io/bootstrap-4/Options/#locale)
+		format: "YYYY-MM-DD",
+		date: moment(),
+		inline: true
+	});
   
-	if( primary_sensor=="" )	//si no le hemos pasado un sensor principal cogemos el primero que encontremos
+	
+	//ponemos gif de carga y realizamos petición de datos por ajax
+	$(".loading").show();
+	
+	$.get( "index.php", { d: ajax_date/*, s: current_station*/ } ).done(
+		function( unsorted_data ) {
+			
+		unsorted_data=JSON.parse( unsorted_data );	
+		
+		if(unsorted_data.length==0)
+		{
+			alert("No hay datos recogidos para esa fecha");
+			$(".loading").fadeOut(800);
+			return;
+		}
+
+	//destruímos las gráficas antes de regenerarlas
+	Chart.helpers.each(Chart.instances, function(instance){	//recogemos las posibles instancias que haya de gráficas y las destruímos (solo las 2 que vamos a rehacer)
+		if(instance.canvas.id=="sensors-chart-canvas" || instance.canvas.id=="line-chart")
+			instance.destroy();
+	})
+			
+			
+if( primary_sensor=="" )	//si no le hemos pasado un sensor principal cogemos el primero que encontremos
 		primary_sensor=unsorted_data[0].sensor_name;
 	if( primary_status=="" )	//si no le hemos pasado un sensor principal cogemos el primero que encontremos
 		primary_status=unsorted_data[0].status_name;
-			
-	/* -- Date management -- */ 
-	var date_now;	//día y hora actual, a menos que seleccionemos una diferente
-	if(to_date!='')
-		date_now=new Date(to_date);
-	else
-	{
-		if(to_month!='')
-			date_now=new Date(to_month);
-	}
 	
 	var date_online;	//(online en los últimos x minutos (configurable))
 	if(online_threshold_minutes>0)
@@ -79,7 +120,7 @@ function main(daily_charts,fm,to_month,to_date,online_threshold_minutes,primary_
 	if(daily_charts)	//charts with daily data
 	{
 		var sensor_chart_title=moment(date_now).format("LLLL"); //título con el día completo
-		
+	
 		var sensor_filtered_data=filter_daily_data(sensor_data.length,fm,date_now,sensor_data);
 	}
 	else	//charts with monthly data
@@ -95,7 +136,7 @@ function main(daily_charts,fm,to_month,to_date,online_threshold_minutes,primary_
 	/* status chart */
 		
 		var status_filtered_data=filter_monthly_data('status_value',data_by_station.length,date_now,data_by_station,primary_status);
-
+		//var status_filtered_data=filter_daily_data('status_value',data_by_station.length,date_now,data_by_station,primary_status);
 
 	/* 3 knobs */
 	
@@ -166,13 +207,7 @@ function main(daily_charts,fm,to_month,to_date,online_threshold_minutes,primary_
 $('.knob').knob()
 
 
-// <!!!>The Calender (Tempus Dominus)
-  $('#calendar').datetimepicker({
-	locale: moment.locale('es'), //hay que ejecutar el js del locale deseado (https://tempusdominus.github.io/bootstrap-4/Options/#locale)
-    format: "YYYY-MM-DD",
-    date: moment(),
-    inline: true
-  })
+
 
 
 /* OSM MAP  */
@@ -319,11 +354,8 @@ if(use_map)
   )
 
 
-
-
  // <!!!> Stats graph chart
   var statsGraphChartCanvas = $('#line-chart').get(0).getContext('2d');
-
   var statsGraphChartData = generate_chart(status_filtered_data.x);
 
   //añadimos los datos a la gráfica de estado
@@ -371,6 +403,21 @@ if(use_map)
       data: statsGraphChartData, 
       options: statsGraphChartOptions
     }
-  )
+  )			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			$(".loading").fadeOut(800);//.hide();
+		}
+	);
+	
+	
 
 }//)

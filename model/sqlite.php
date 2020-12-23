@@ -34,12 +34,37 @@ class Mydb extends SQLite3
 		}
 	}
 	
-	function get_all_data()
+	function get_all_data($date,$station=NULL)
 	{
+		if(!is_null($date))
+		{
+			if( substr_count( $date,'-' )!=1 )
+				$where_date=" WHERE strftime('%Y-%m-%d',time) = '".$date."' "; //$where_date=" WHERE time = DATE('".$date."') ";
+			else
+			{
+				//$month_start=$date."/01";
+				//$month_end=$date."/31"; //irrelevante si nos pasamos de días totales de ese mes
+				//$where_date=" WHERE time between DATE('".$month_start."') AND DATE('".$month_end."') ";
+				$where_date=" WHERE strftime('%Y-%m',time) = '".$date."' ";
+			}
+			$where_station_prefix=" AND ";
+		}
+		else
+		{
+			$where_date="";
+			$where_station_prefix=" WHERE ";
+		}
+		
+		if(!is_null($station))
+			$where_station = $where_station_prefix." AND station='".$station."' ";
+		else
+			$where_station = "";
+		
 		//  *sqlite no permite full outer join (lo necesitamos ya que no todas las estaciones tienen que transmitir su estado o su gps)
 		//  *lo podemos emular con https://www.sqlitetutorial.net/sqlite-full-outer-join/
 		$ret = $this->query("SELECT se.station,se.sensor_name,se.time, se.sensor_value, st.status_name, st.status_value from station_sensors se 
 							LEFT JOIN station_status st USING(station,time) 
+							".$where_date." ".$where_station."
 							UNION ALL SELECT se.station,se.sensor_name,se.time, se.sensor_value, st.status_name, st.status_value from station_sensors se 
 							LEFT JOIN station_status st USING(station,time) 
 							WHERE station is null and time is null;");
@@ -57,6 +82,7 @@ class Mydb extends SQLite3
 		return json_encode($array);
 	}
   
+	/*
 	function get_station($station)
 	{
 		$ret = $this->query("
@@ -71,7 +97,7 @@ class Mydb extends SQLite3
 		}
 		return $ret;
 	}
-
+	*/
 	function get_station_names()
 	{
 		$ret = $this->query("SELECT station from station_sensors group by station;");
