@@ -45,7 +45,7 @@ function main(daily_charts,fm,to_month,to_date,online_threshold_minutes,primary_
 		function( unsorted_data ) {
 			
 		unsorted_data=JSON.parse( unsorted_data );	
-		
+//console.log(unsorted_data);		
 		if(unsorted_data.length==0)
 		{
 			alert("No hay datos recogidos para esa fecha");
@@ -224,7 +224,7 @@ if(use_map)
 		station_locations[i]=new Array();
 		var station_by_time=_.groupBy(data_by_station[i],"time");
 		var station_by_time_values=Object.values(station_by_time);
-		var date_aux=Object.entries(station_by_time)[i][0];
+		var date_aux=Object.entries(station_by_time)[Object.entries(station_by_time).length - 1][0];	//tomamos la última fecha del vector
 		
 //console.log(" "+i+" : ");	
 //console.log(station_by_time);	
@@ -314,10 +314,8 @@ if(use_map)
 /* Chart.js Charts */
 
 // <!!!>Sensors chart
-	///////usamos "sensor_names[]", "sensor_filtered_data.x" and "sensor_filtered_data.y[]"
-
+	///////usamos "sensor_names[]", "sensor_filtered_data.x" y "sensor_filtered_data.y[]"
   var sensorsChartCanvas = document.getElementById('sensors-chart-canvas').getContext('2d');
-
   var sensorsChartData = generate_chart(sensor_filtered_data.x);
   
   //añadimos los datos a la gráfica de sensores
@@ -403,14 +401,8 @@ if(use_map)
       data: statsGraphChartData, 
       options: statsGraphChartOptions
     }
-  )			
-			
-			
-			
-			
-			
-			
-			
+  )
+  
 			
 			
 			
