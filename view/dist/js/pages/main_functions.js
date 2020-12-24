@@ -101,11 +101,15 @@ function filter_daily_data(total_elements,fm,date_now,sensor_data)
 	else	//si no, sacamos la moda de espacio de tiempo entre cada medida para tomarla como referencia
 	{
 		var data_times_arr=Object.keys(_.groupBy(sensor_data[0],'time'));
-		var data_times_numeric_arr=new Array(data_times_arr.length);
-		for(var i=0;i<data_times_arr.length-1;i++)
-			data_times_numeric_arr[i]=Math.round( (new Date(data_times_arr[i+1])).getTime()/1000/60 - (new Date(data_times_arr[i])).getTime()/1000/60 );//tomamos todo el tiempo en milisegundos para restarlo, después lo convertimos a minutos
-		//calculamos la moda con los valores obtenidos (https://stackoverflow.com/questions/49731282/the-most-frequent-item-of-an-array-using-lodash)
-		mode_minutes = _.head(_(data_times_numeric_arr).countBy().entries().maxBy(_.last));
+		if(data_times_arr.length>1)
+		{
+			var data_times_numeric_arr=new Array(data_times_arr.length);
+			for(var i=0;i<data_times_arr.length-1;i++)
+				data_times_numeric_arr[i]=Math.round( (new Date(data_times_arr[i+1])).getTime()/1000/60 - (new Date(data_times_arr[i])).getTime()/1000/60 );//tomamos todo el tiempo en milisegundos para restarlo, después lo convertimos a minutos
+			//calculamos la moda con los valores obtenidos (https://stackoverflow.com/questions/49731282/the-most-frequent-item-of-an-array-using-lodash)
+			mode_minutes = _.head(_(data_times_numeric_arr).countBy().entries().maxBy(_.last));
+		}
+		else mode_minutes=1; //si no hemos definido fm, y solo hay un elemento, hacemos muestreo de cada minuto ya que es el intervalo mínimo (solo para esa muestra)
 	}
 	//muestras en los minutos del día divididos entre el intervalo entre mediciones (a una medición por minuto tenemos 1 muestra por minuto, que son 1440 muestras en un día)
 

@@ -4,15 +4,11 @@ if (!defined('FROM_INDEX')) die();
 include_once('model/index.php');
 $model=new Model($db_conf);
 
-function isValidJSON($str) {
-   json_decode($str);
-   return json_last_error() == JSON_ERROR_NONE;
-}
-
 //manejamos los datos recibidos de las estaciones
-
 $json_params = file_get_contents("php://input");
-if (strlen($json_params) > 0 && isValidJSON($json_params))
+json_decode($json_params); //almacena internamente si hubo errores 
+
+if (strlen($json_params) > 0 && json_last_error() == JSON_ERROR_NONE )
 {
 	if(isset($json_params['sensor_name']))
 		$simple_output=$model->insert_station_data($json_params['station_id'],$json_params['sensor_name'],$json_params['time'],$json_params['sensor_val']);
@@ -71,7 +67,7 @@ else //manejamos las peticiones del usuario
 				$current_page="Arduino Sim Data Adquisition System";
 				//$current_view='main';
 				$use_map=true;
-				//$unsorted_data=$model->get_all();
+				//$unsorted_data=$model->get_all(); // <- ahora la pedimos por ajax con javascript
 		}
 
 	}

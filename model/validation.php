@@ -1,7 +1,6 @@
 <?php
 if (!defined('FROM_INDEX')) die();
 
-
 class Validation
 {
 	function v_str($s)
