@@ -3,7 +3,7 @@
 -Adminlte 3.1.0 con bootstrap v4.5.3. 
 -Librerías añadidas: leaflet, moment y tempusdominus(locale:es)
 -Por detrás php con un modelo simple personal tipo modelo-vista-controlador
--Por delante javascript procesa todos los datos que recibe de la base de datos a través de php
+-Por delante javascript procesa todos los datos que recibe de la base de datos por peticiones ajax
 */
 
 define('DEBUG', 'true'); // para recibir salida de errores

@@ -16,14 +16,18 @@ function main(daily_charts,fm,to_month,to_date,online_threshold_minutes,primary_
 	if(to_month!='')
 	{
 		date_now=new Date(to_month);
-		ajax_date=moment(date_now).format('YYYY-MM');
+		date_now=moment(date_now).add(date_now.getTimezoneOffset(), 'minutes').toDate(); //arreglo de tiempo sumado ya que el constructor de Date() no es consistente con el formato YYYY-MM
+		ajax_date=to_month;//moment(date_now).format('YYYY-MM');
 	}
 	else
 	{
 		if(to_date!='')
+		{
 			date_now=new Date(to_date);
+			date_now=moment(date_now).add(date_now.getTimezoneOffset(), 'minutes').toDate(); //arreglo de tiempo sumado ya que el constructor de Date() no es consistente con el formato YYYY-MM-DD
+		}
 		else
-			date_now=new Date(to_date);
+			date_now=new Date();
 		
 		ajax_date=moment(date_now).format('YYYY-MM-DD');
 	}	
