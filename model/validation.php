@@ -21,7 +21,7 @@ class Validation
 	
 	function v_date($d)
 	{
-		if( strlen($d)<=10 && preg_match("#^[0-9\-]+$#", $d) )	//formato: "2020/09/20" O "2020/09"
+		if( strlen($d)<=10 && preg_match("#^[0-9\-]+$#", $d) )	//formato: "2020-09-20" O "2020-09"
 			return true;
 		else 
 			return false;

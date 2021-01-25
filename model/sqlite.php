@@ -21,17 +21,27 @@ class Mydb extends SQLite3
 	function insert_station_data($station,$sensor_name,$time,$sensor_value)
 	{
 		$ret = $this->exec("INSERT INTO station_sensors values ('".$station."','".$sensor_name."','".$sensor_value."','".$time."');");
-		if(!$ret && DEBUG) {
-			echo $this->lastErrorMsg();
+		if(!$ret) {
+			if(DEBUG)
+				return $this->lastErrorMsg();
+			else
+				return FAIL_RETURN;
 		}
+		else
+			return CORRECT_RETURN;
 	}
 	
 	function insert_station_aditional_data($station,$status_name,$time,$status_value)
 	{
 		$ret = $this->exec("INSERT INTO station_status values ('".$station."','".$status_name."','".$time."','".$status_value."');");
-		if(!$ret && DEBUG) {
-			echo $this->lastErrorMsg();
+		if(!$ret) {
+			if(DEBUG)
+				return $this->lastErrorMsg();
+			else
+				return FAIL_RETURN;
 		}
+		else
+			return CORRECT_RETURN;
 	}
 	
 	function get_all_data($date,$station=NULL)

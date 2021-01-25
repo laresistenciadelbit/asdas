@@ -29,7 +29,7 @@ else //manejamos las peticiones del usuario
 		}
 
 	//recibimos peticiones por ajax para obtener los datos de una fecha concreta
-	if(isset($_GET['d']) )	
+	if(isset($_GET['d']) )
 	{
 		if(isset($_GET['s']) )
 			$simple_output=$model->get_station($_GET['d'],$_GET['s']);
@@ -43,13 +43,12 @@ else //manejamos las peticiones del usuario
 		$stations=$model->get_station_names();
 		$config=$model->get_config();
 		
-		$use_map=false;	// <- activa el script del api de mapas de osm (por defectro falso, luego se reescribe si es necesario)
-
 		if(isset($_GET['p']))
 			$current_view=$_GET['p'];
 		else
 			$current_view="main";
-			
+		
+		$use_map=false;	// <- activa el script del api de mapas de osm según en que sección (por defectro falso, luego se activa en las secciones que lo queramos)	
 		switch($current_view)
 		{
 			case 'admin':
