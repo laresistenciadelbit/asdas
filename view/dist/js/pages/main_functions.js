@@ -54,8 +54,8 @@ function date_pad(n) { return String("0" + n).slice(-2); }
 function calculate_day_start_time(cdate,cday){	return moment( cdate.getFullYear().toString()+'-'+date_pad(cdate.getMonth()+1)+'-'+date_pad(cday) ).format('YYYY-MM-DD HH:mm:ss'); }
 function calculate_day_end_time(cdate,cday)  {	return moment( cdate.getFullYear().toString()+'-'+date_pad(cdate.getMonth()+1)+'-'+date_pad(cday) ).add(1, 'days').subtract(1, 'seconds').format('YYYY-MM-DD HH:mm:ss'); }
 
-//type y status_type es lo que va a definir si obtenemos los datos del sensor o del estado de la estación
-function filter_monthly_data(type,total_elements,date_now,data,status_type)
+//type y status_type es lo que va a definir si obtenemos los datos del sensor o del estado de la estación (estos dos últimos solo se definen si le pasamos un estado)
+function filter_monthly_data(total_elements,date_now,data,status_name=null,type='sensor_value')
 {
 	var avg_output=new Array(total_elements);
 	//generamos un vector con los días del mes actual
@@ -75,7 +75,7 @@ function filter_monthly_data(type,total_elements,date_now,data,status_type)
 			
 			//si sacamos el estado filtramos por tipo de estado
 			if(type=='status_value'){
-				current_day_data=_.filter(current_day_data, function(o) {if( o.status_name==status_type ) return o; } );
+				current_day_data=_.filter(current_day_data, function(o) {if( o.status_name==status_name ) return o; } );
 			}
 			
 			//filgramos para tomar solo los valores de los sensores
@@ -89,6 +89,68 @@ function filter_monthly_data(type,total_elements,date_now,data,status_type)
 	return {x:days_in_this_month , y:avg_output};
 }
 
+function filter_daily_data(total_elements,fm,date_now,sensor_data,status_name=null,type='sensor_value')
+{///////// POR MODIFICAR <---------- modificado! pero cambiar las llamadas!
+	var avg_output=new Array(total_elements);
+	var mode_minutes;
+	
+	if(fm)	//si le hemos pasado la frecuencia de muestreo (cada cuantos minutos va a tomar un valor) usamos este dato
+	{
+		mode_minutes=fm;
+	}
+	else	//si no, sacamos la moda de espacio de tiempo entre cada medida para tomarla como referencia
+	{
+		var data_times_arr=Object.keys(_.groupBy(sensor_data[0],'time'));
+		if(data_times_arr.length>1)
+		{
+			var data_times_numeric_arr=new Array(data_times_arr.length);
+			for(var i=0;i<data_times_arr.length-1;i++)
+				data_times_numeric_arr[i]=Math.round( (new Date(data_times_arr[i+1])).getTime()/1000/60 - (new Date(data_times_arr[i])).getTime()/1000/60 );//tomamos todo el tiempo en milisegundos para restarlo, después lo convertimos a minutos
+			//calculamos la moda con los valores obtenidos (https://stackoverflow.com/questions/49731282/the-most-frequent-item-of-an-array-using-lodash)
+			mode_minutes = _.head(_(data_times_numeric_arr).countBy().entries().maxBy(_.last));
+		}
+		else mode_minutes=1; //si no hemos definido fm, y solo hay un elemento, hacemos muestreo de cada minuto ya que es el intervalo mínimo (solo para esa muestra)
+	}
+	//muestras en los minutos del día divididos entre el intervalo entre mediciones (a una medición por minuto tenemos 1 muestra por minuto, que son 1440 muestras en un día)
+
+	var samples = Math.round( (60*24) / mode_minutes );
+	//recogemos valores de cada muestra desde el día anterior (suele ser cada minuto,2minutos,5minutos,15minutos por eso lo llamamos minutes_from_last_day
+	var minutes_from_last_day=new Array(samples);
+	var date_aux=moment(date_now);
+	
+	for(var i=(samples)-1;i>=0;i--)
+	{
+		minutes_from_last_day[i]=date_aux.format('HH:mm');
+		date_aux=date_aux.subtract(mode_minutes,'minutes');
+	}
+
+	for(var i=0;i<total_elements;i++)
+	{
+		avg_output[i] = new Array(minutes_from_last_day.length); //vamos redimensionando el array mientras lo rellenamos
+		for(var j=0;j<minutes_from_last_day.length;j++)
+		{
+			//calculamos los valores para obtener los datos entre una muestra y la siguiente
+			var start_min = moment( date_now.getFullYear().toString()+'-'+date_pad(date_now.getMonth()+1)+'-'+date_pad(date_now.getDate())+' '+minutes_from_last_day[j] ).format('YYYY-MM-DD HH:mm:ss');
+			var end_min   = moment( date_now.getFullYear().toString()+'-'+date_pad(date_now.getMonth()+1)+'-'+date_pad(date_now.getDate())+' '+minutes_from_last_day[j] ).add(mode_minutes, 'minutes').subtract(1, 'seconds').format('YYYY-MM-DD HH:mm:ss');
+			//tomamos los datos entre el comienzo de esta muestra y la anterior
+			var current_sample_data=_.filter(sensor_data[i], function(o) {if(o.time>start_min && o.time<end_min ) return o; } );
+			
+			//si sacamos el estado filtramos por tipo de estado
+			if(type=='status_value'){
+				current_sample_data=_.filter(current_sample_data, function(o) {if( o.status_name==status_name ) return o; } );
+			}
+			//filgramos para tomar solo los valores de los sensores
+			var sensor_values_current_sample=_.groupBy(current_sample_data,type);
+			//tomamos solo los números, los transformamos a formato numérico y calculamos su media en esa muestra
+			var tmp_avg=_.mean(Object.keys(sensor_values_current_sample).map(Number));
+			if(  !isNaN(tmp_avg) )
+				avg_output[i][j]=tmp_avg;
+		}
+	}
+	return {x:minutes_from_last_day , y:avg_output};
+}
+
+/*
 function filter_daily_data(total_elements,fm,date_now,sensor_data)
 {
 	var avg_output=new Array(total_elements);
@@ -113,7 +175,7 @@ function filter_daily_data(total_elements,fm,date_now,sensor_data)
 	}
 	//muestras en los minutos del día divididos entre el intervalo entre mediciones (a una medición por minuto tenemos 1 muestra por minuto, que son 1440 muestras en un día)
 
-	var samples = (60*24) / mode_minutes;
+	var samples = Math.round( (60*24) / mode_minutes );
 	//recogemos valores de cada muestra desde el día anterior (suele ser cada minuto,2minutos,5minutos,15minutos por eso lo llamamos minutes_from_last_day
 	var minutes_from_last_day=new Array(samples);
 	var date_aux=moment(date_now);
@@ -144,3 +206,4 @@ function filter_daily_data(total_elements,fm,date_now,sensor_data)
 	}
 	return {x:minutes_from_last_day , y:avg_output};
 }
+*/

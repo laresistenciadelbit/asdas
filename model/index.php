@@ -35,48 +35,45 @@ class Model
 		return $this->config;
 	}
 
+	function validate_station_data($station,$setting_name,$time,$setting_value)
+	{
+		$valid=true;
+		if(!$this->validate->v_str($station))
+			$valid=false;
+		else
+			$station=htmlspecialchars($station);
+		if(!$this->validate->v_str($setting_name))
+			$valid=false;
+		else
+			$setting_name=htmlspecialchars($setting_name);
+		if(!$this->validate->v_time($time))
+			$valid=false;
+		if(!$this->validate->v_value($setting_value))
+			$valid=false;
+		
+		return $valid;
+	}
+
 	function insert_station_data($station,$sensor_name,$time,$sensor_value)
 	{
-		$valid=true;
-		if(!$this->validate->v_str($station))
-			$valid=false;
-		else
-			$station=htmlspecialchars($station);
-		if(!$this->validate->v_str($sensor_name))
-			$valid=false;
-		else
-			$sensor_name=htmlspecialchars($sensor_name);
-		if(!$this->validate->v_time($time))
-			$valid=false;
-		if(!$this->validate->v_value($sensor_value))
-			$valid=false;
-		//else	(no es necesario)
-		//	$sensor_value=filter_var($sensor_value, FILTER_VALIDATE_FLOAT);
+		$valid=validate_station_data($station,$sensor_name,$time,$sensor_value);
 		
 		if($valid)
-			$this->db->insert_station_data($station,$sensor_name,$time,$sensor_value);
+			return $this->db->insert_station_data($station,$sensor_name,$time,$sensor_value);
+		else
+			return FAIL_RETURN;
 	}
-	
+
 	function insert_station_aditional_data($station,$status_name,$time,$status_value)
 	{
-		$valid=true;
-		if(!$this->validate->v_str($station))
-			$valid=false;
-		else
-			$station=htmlspecialchars($station);
-		if(!$this->validate->v_str($status_name))
-			$valid=false;
-		else
-			$status_name=htmlspecialchars($status_name);
-		if(!$this->validate->v_time($time))
-			$valid=false;
-		if(!$this->validate->v_value($status_value))
-			$valid=false;
+		$valid=validate_station_data($station,$status_name,$time,$status_value);
 		
 		if($valid)
-			$this->db->insert_station_aditional_data($station,$status_name,$time,$status_value);
+			return $this->db->insert_station_aditional_data($station,$status_name,$time,$status_value);
+		else
+			return FAIL_RETURN;
 	}
-	
+
 	function get_all($date="")
 	{
 		if( $this->validate->v_date($date) || $date=='' )
@@ -84,7 +81,7 @@ class Model
 		else
 			return false;
 	}
-	
+
 	function get_station($date,$station)
 	{
 		if( $this->validate->v_str($station) && ( $this->validate->v_date($date) || $date=='' ) )
@@ -97,7 +94,7 @@ class Model
 	{
 		return $this->db->get_station_names();
 	}
-	
+
 	function save_config($pass,$fm,$online_threshold_minutes,$primary_sensor,$primary_status)
 	{//if(is_null($online_threshold_minutes)) echo 'WTFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF';die();
 		$valid=true;
@@ -126,12 +123,5 @@ class Model
 		return $ret;
 	}
 }
-   
-   
-	
 
-	
-	
-	
-	
 ?>

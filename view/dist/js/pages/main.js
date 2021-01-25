@@ -132,15 +132,17 @@ if( primary_sensor=="" )	//si no le hemos pasado un sensor principal cogemos el 
 		var sensor_chart_title=moment(date_now).format("MMMM"); //título con el mes
 		sensor_chart_title=sensor_chart_title.charAt(0).toUpperCase() + sensor_chart_title.slice(1); 
 
-		var sensor_filtered_data=filter_monthly_data('sensor_value',sensor_data.length,date_now,sensor_data);
+		var sensor_filtered_data=filter_monthly_data(sensor_data.length,date_now,sensor_data);
 	}
 	$("#sensor-chart-title").html( "<i class='fas fa-chart-pie mr-1'></i> Valor medio de sensores en "+sensor_chart_title );
 	
 
 	/* status chart */
+		if(daily_charts)
+			var status_filtered_data=filter_daily_data(data_by_station.length,fm,date_now,data_by_station,primary_status,'status_value');
+		else
+			var status_filtered_data=filter_monthly_data(data_by_station.length,date_now,data_by_station,primary_status,'status_value');
 		
-		var status_filtered_data=filter_monthly_data('status_value',data_by_station.length,date_now,data_by_station,primary_status);
-		//var status_filtered_data=filter_daily_data('status_value',data_by_station.length,date_now,data_by_station,primary_status);
 
 	/* 3 knobs */
 	

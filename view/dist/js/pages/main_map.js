@@ -22,7 +22,7 @@ function render_map(map_content)
 		
 		//https://geopois.com/blog/leaflet/leaflet-tiles	
 		
-		var layer = new L.TileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png");
+		var layer = new L.TileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png");
 		//var layer = new L.TileLayer("https://tile.thunderforest.com/pioneer/{z}/{x}/{y}.png?apikey=e10b1ea5f4ed400f83e2ee5aeeb006f7");
 		//var layer = new L.TileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}");
 		//var layer = new L.TileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png");
