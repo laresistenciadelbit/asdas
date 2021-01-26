@@ -9,7 +9,7 @@ if (!defined('FROM_INDEX')) die();
 <section class="content">
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
-        <div class="row">
+        <div class="row" id="boxes">
           <div class="col-lg-3 col-6">
             <!-- small box -->
             <div class="small-box bg-info">

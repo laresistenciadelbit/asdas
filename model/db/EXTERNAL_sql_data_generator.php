@@ -9,9 +9,9 @@ $lon_blasco=-0.342833;
 $lat_pont=39.480490;
 $lon_pont=-0.373655;
 
-$date=date_create("2020-11-01 08:05:12");
+$date=date_create("2020-12-01 08:05:12");
 
-while( $date->format("Y-m-d H:i:s") < "2020-12-01 00:00:00" )
+while( $date->format("Y-m-d H:i:s") < "2021-01-25 08:05:12" )
 {
 	date_add($date,date_interval_create_from_date_string("30 minutes"));
 	
@@ -33,6 +33,8 @@ echo "<br>";
 	echo "insert into station_sensors values ('uv','co2','".$date->format("Y-m-d H:i:s")."',".$uv_co2.");";
 echo "<br>";
 	$uv_batt+= rand(-10,9.2)/10 + $positive*1.18 - $negative*1.3 + rand(-50,51)/100;
+	if($uv_batt<12)$uv_batt=14+rand(-10,9.2)/10;
+	if($uv_batt>96)$uv_batt=93+rand(-10,9.2)/10;
 	echo "insert into station_status values ('uv','battery','".$date->format("Y-m-d H:i:s")."',".$uv_batt.");" ;
 echo "<br>";
 	

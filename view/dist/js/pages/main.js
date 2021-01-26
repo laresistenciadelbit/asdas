@@ -6,7 +6,7 @@
 	\	to_date					 -> string  -> fecha de la que tomaremos el día para mostrarlo en la gráfica (si no, será el día actual)
 	\	online_threshold_minutes -> numeric -> minutos de margen para declarar si una estación está online o no (es decir, si recibimos datos cada 5 minutos, lo suyo es ponerle el límite ligeramente mayor de 5 mintuos.
 */
-function main(daily_charts,fm,to_month,to_date,online_threshold_minutes,primary_sensor,primary_status) {
+function main(daily_charts,fm,to_month,to_date,online_threshold_minutes,primary_sensor,primary_status,current_station) {
   'use strict'
 
 	var unsorted_data;
@@ -45,17 +45,19 @@ function main(daily_charts,fm,to_month,to_date,online_threshold_minutes,primary_
 	//ponemos gif de carga y realizamos petición de datos por ajax
 	$(".loading").show();
 	
-	$.get( "index.php", { d: ajax_date/*, s: current_station*/ } ).done(
-		function( unsorted_data ) {
-			
+	$.get( "index.php", { d: ajax_date, s: current_station } ).done(
+		function( unsorted_data ) {	
+//console.log(unsorted_data);
 		unsorted_data=JSON.parse( unsorted_data );	
-//console.log(unsorted_data);		
 		if(unsorted_data.length==0)
 		{
+			$("#boxes").hide();
 			alert("No hay datos recogidos para esa fecha");
 			$(".loading").fadeOut(800);
 			return;
 		}
+		else
+			$("#boxes").show();
 
 	//destruímos las gráficas antes de regenerarlas
 	Chart.helpers.each(Chart.instances, function(instance){	//recogemos las posibles instancias que haya de gráficas y las destruímos (solo las 2 que vamos a rehacer)
@@ -168,10 +170,18 @@ if( primary_sensor=="" )	//si no le hemos pasado un sensor principal cogemos el 
 //////////////////////////////////////////////////////////////////////////	
   
   /*--4 boxes widget--*/
-	$("#registered-stations").text(total_stations);
-	$("#online-stations").text(online_stations);
-	$("#registered-sensors").text(sensors);
-	$("#low-battery").text(battery_low_count);
+	if(current_station=="")
+	{
+		$("#registered-stations").text(total_stations);
+		$("#online-stations").text(online_stations);
+		$("#registered-sensors").text(sensors);
+		$("#low-battery").text(battery_low_count);
+	}
+	else
+	{
+		//$(".container-xl").css({"margin-right":"unset"});
+		$("#boxes").hide();
+	}
 
   // Make the dashboard widgets sortable Using jquery UI
   $('.connectedSortable').sortable({
@@ -183,6 +193,7 @@ if( primary_sensor=="" )	//si no le hemos pasado un sensor principal cogemos el 
   })
   $('.connectedSortable .card-header, .connectedSortable .nav-tabs-custom').css('cursor', 'move')
 
+/*
   // jQuery UI sortable for the todo list
   $('.todo-list').sortable({
     placeholder         : 'sort-highlight',
@@ -190,11 +201,14 @@ if( primary_sensor=="" )	//si no le hemos pasado un sensor principal cogemos el 
     forcePlaceholderSize: true,
     zIndex              : 999999
   })
+*/
+
 
   // bootstrap WYSIHTML5 - text editor
-  $('.textarea').summernote()
+//  $('.textarea').summernote()
 
-  $('.daterange').daterangepicker({
+
+/*  $('.daterange').daterangepicker({
     ranges   : {
       'Today'       : [moment(), moment()],
       'Yesterday'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -206,8 +220,9 @@ if( primary_sensor=="" )	//si no le hemos pasado un sensor principal cogemos el 
     startDate: moment().subtract(29, 'days'),
     endDate  : moment()
   }, function (start, end) {
-    window.alert('You chose: ' + start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
+    //window.alert('You chose: ' + start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
   })
+*/
 
 /* jQueryKnob */
 $('.knob').knob()
