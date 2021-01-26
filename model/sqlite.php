@@ -7,7 +7,7 @@ class Mydb extends SQLite3
 	{
 		$this->open('model/db/'.$db_conf);
 	}
-	
+
 	function load_config()
 	{
 		$ret = $this->query("SELECT * FROM config;");
@@ -66,10 +66,9 @@ class Mydb extends SQLite3
 		}
 		
 		if(!is_null($station))
-			$where_station = $where_station_prefix." AND station='".$station."' ";
+			$where_station = $where_station_prefix." station='".$station."' ";
 		else
-			$where_station = "";
-		
+			$where_station = "";		
 		//  *sqlite no permite full outer join (lo necesitamos ya que no todas las estaciones tienen que transmitir su estado o su gps)
 		//  *lo podemos emular con https://www.sqlitetutorial.net/sqlite-full-outer-join/
 		$ret = $this->query("SELECT se.station,se.sensor_name,se.time, se.sensor_value, st.status_name, st.status_value from station_sensors se 
@@ -91,23 +90,7 @@ class Mydb extends SQLite3
 		}
 		return json_encode($array);
 	}
-  
-	/*
-	function get_station($station)
-	{
-		$ret = $this->query("
-		SELECT se.station,se.sensor_name,se.time, se.sensor_value, st.status_name, st.status_value from station_sensors se LEFT JOIN station_status st USING(station,time)
-		WHERE station='".$station."'
-		UNION ALL SELECT se.station,se.sensor_name,se.time, se.sensor_value, st.status_name, st.status_value from station_sensors se 
-		LEFT JOIN station_status st USING(station,time) 
-		WHERE station is null and time is null;
-		");
-		if(!$ret && DEBUG) {
-			echo $this->lastErrorMsg();
-		}
-		return $ret;
-	}
-	*/
+
 	function get_station_names()
 	{
 		$ret = $this->query("SELECT station from station_sensors group by station;");
@@ -123,7 +106,7 @@ class Mydb extends SQLite3
 		}
 		return $array;
 	}
-	  
+
 	function set_config($pass,$fm,$online_threshold_minutes,$primary_sensor,$primary_status)
 	{
 	
@@ -146,6 +129,4 @@ class Mydb extends SQLite3
 			return false;
 	}
 }
-
-
 ?>

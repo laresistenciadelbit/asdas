@@ -1,0 +1,27 @@
+select station, time, status_value as battery, abs( status_value + strftime('%d',time) ) FROM station_status where status_name='battery';
+
+
+update station_status set status_value=status_value+ strftime('%d',time) where status_name='battery';
+update station_status set status_value=95 where status_value>99 and status_name='battery';
+update station_status set status_value=6 where status_value<1 and status_name='battery';
+
+
+--------------------
+
+select station, time, status_value as battery FROM station_status where status_name='battery' and strftime('%H',time) between 0 and 7 ;
+select station, time, strftime('%H',time) , status_value as battery FROM station_status where status_name='battery' and strftime('%H',time) between "00" and "07" ;
+
+
+update station_status set status_value=status_value+8 where status_value between 0 and 23  and status_name='battery';
+update station_status set status_value=status_value-10 where status_value between 80 and 100  and status_name='battery';
+
+update station_status set status_value=status_value-12 where status_name='battery' and strftime('%H',time) between "00" and "07";
+update station_status set status_value=status_value+12 where status_name='battery' and strftime('%H',time) between "10" and "18";
+
+
+-- FIX FOR blasco ibañez AND puerto
+
+update station_status set status_value=status_value/2 where status_name='battery' and station != "uv";
+update station_status set status_value=status_value+10 where status_name='battery' and station != "uv";
+
+

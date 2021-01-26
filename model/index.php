@@ -85,7 +85,7 @@ class Model
 	function get_station($date,$station)
 	{
 		if( $this->validate->v_str($station) && ( $this->validate->v_date($date) || $date=='' ) )
-			return $this->db->get_all_data($date,htmlspecialchars($station));
+			return $this->db->get_all_data($date,utf8_decode(htmlspecialchars($station)));	//importante el utf8_decode en base de datos sqlite, ya que sqlite en php no admite una conexión con codificación utf8
 		else
 			return false;
 	}

@@ -20,7 +20,7 @@ if (!defined('FROM_INDEX')) die();
   <!-- JQVMap -->
   <link rel="stylesheet" href="view/dist/plugins/jqvmap/jqvmap.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="view/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="view/dist/css/adminlte.min_noplugins.css">
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="view/dist/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- Daterange picker -->

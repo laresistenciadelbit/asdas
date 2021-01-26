@@ -28,19 +28,19 @@ else
             <h1 class="m-0 text-dark"><?=$current_page?></h1>
           </div><!-- /.col -->
 
+		  <div class="col-sm-6">
   <?php 
-	    if($current_view!='main')
+	    if( $current_view!='main' || !empty($current_station) )
 	    {
 		  echo '
-          <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="./index.php">Inicio</a></li>
               <li class="breadcrumb-item active">'.$current_page.'</li>
             </ol>
-          </div>
 		  ';
-		} 
+		}
 	?>
+		  </div>
   
         </div>
       </div>
