@@ -67,6 +67,53 @@ if( $config['pass']=='' || ( isset($_GET['pass']) && $_GET['pass']==htmlspecialc
           </div>
           <!-- /.card -->
         </div>
+		
+		
+		
+		
+<?php if('DEBUG' && file_exists(DEBUG_REQUESTS_FILE) ) 
+{?>
+		<div class="col-md-6">
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">Log de peticiones web</h3>
+
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="card-body">
+				<?php
+					$div_log_block_start='<div style="padding: 10px; border: dotted gray 2px; border-radius:15px; margin-bottom: 10px;">';
+					echo $div_log_block_start;
+					for($i=sizeof($request_log)-1;$i>=0;$i--)	//lo mostramos en orden inverso
+					{
+						if( $request_log[$i] == "============================".PHP_EOL."<br>")
+						{
+							if($i>0)
+								echo "</div>".$div_log_block_start;
+							else
+								echo "</div>";
+						}
+						else
+						{
+							if($i==sizeof($request_log)-1)
+								echo str_replace("<br>", '', $request_log[$i]);
+							else
+								echo $request_log[$i];
+						}
+					}
+				?>
+				
+				
+            </div>
+          </div>
+        </div>
+<?php
+}?>		
+		
 	  </div>
 	</section>
 	

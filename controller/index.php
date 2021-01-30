@@ -8,6 +8,23 @@ $model=new Model($db_conf);
 $json_params = file_get_contents("php://input");
 json_decode($json_params); //almacena internamente si hubo errores 
 
+
+if('DEBUG' && $_SERVER['REMOTE_ADDR']!="127.0.0.1" && $_SERVER['REMOTE_ADDR']!='81.202.88.64' )
+{ //En modo depuración logueará todas las peticiones realizadas
+	date_default_timezone_set('Europe/Madrid');
+	$fp_log=fopen(DEBUG_REQUESTS_FILE, "a");
+		fwrite($fp_log,'============================'.PHP_EOL);
+		if (strlen($json_params) > 0 && json_last_error() == JSON_ERROR_NONE )
+			fwrite($fp_log,'JSON: '.preg_replace('/\R/', '', print_r($json_params, TRUE)).PHP_EOL);
+		if(isset($_GET))
+			fwrite($fp_log,'GET:  '.preg_replace('/\R/', '', print_r($_GET, TRUE)).PHP_EOL);
+		if(isset($_POST))
+			fwrite($fp_log,'POST: '.preg_replace('/\R/', '', print_r($_POST, TRUE)).PHP_EOL);
+		fwrite($fp_log,'IP:   '.$_SERVER['REMOTE_ADDR'].PHP_EOL);
+		fwrite($fp_log, date("d-m-Y H:i:s").PHP_EOL);
+	fclose($fp_log);
+}
+
 if (strlen($json_params) > 0 && json_last_error() == JSON_ERROR_NONE )
 {
 	if(isset($json_params['sensor_name']))
@@ -53,6 +70,14 @@ else //manejamos las peticiones del usuario
 		switch($current_view)
 		{
 			case 'admin':
+				if('DEBUG' && file_exists(DEBUG_REQUESTS_FILE) )	//leemos el fichero de log para almacenarlo en una variable que pasaremos a la vista
+				{
+					$fp_log=fopen(DEBUG_REQUESTS_FILE, "r") or die("No se pudo abrir el archivo ".DEBUG_REQUESTS_FILE);
+					while(!feof($fp_log)) {
+					  $request_log[]=fgets($fp_log) . "<br>";
+					}
+					fclose($fp_log);
+				}
 				$current_page="Administración";
 			break;
 			case 'station':
