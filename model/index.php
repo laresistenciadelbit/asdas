@@ -53,23 +53,38 @@ class Model
 		
 		return $valid;
 	}
+		
+	function format_time_from_sim_module($time)	//Cambia el formato de fecha que obtiene el módulo Sim de la estación de telefonía al formato de la base de datos: 21/01/31,00:52:57+04 ->  2021-01-31 00:52:57	
+	{
+		return ( '20'.str_replace( "/", "-", substr($time,0,8) ).' '.substr($time,9,8) );
+	}
 
 	function insert_station_data($station,$sensor_name,$time,$sensor_value)
 	{
-		$valid=validate_station_data($station,$sensor_name,$time,$sensor_value);
+		$station=utf8_decode($station);
+		$sensor_name=utf8_decode($sensor_name);
+		$valid=$this->validate_station_data($station,$sensor_name,$time,$sensor_value);
 		
 		if($valid)
-			return $this->db->insert_station_data($station,$sensor_name,$time,$sensor_value);
+		{
+			$time_formated=$this->format_time_from_sim_module($time);
+			return $this->db->insert_station_data($station,$sensor_name,$time_formated,$sensor_value);
+		}
 		else
 			return FAIL_RETURN;
 	}
 
 	function insert_station_aditional_data($station,$status_name,$time,$status_value)
 	{
-		$valid=validate_station_data($station,$status_name,$time,$status_value);
+		$station=utf8_decode($station);
+		$status_name=utf8_decode($status_name);
+		$valid=$this->validate_station_data($station,$status_name,$time,$status_value);
 		
 		if($valid)
-			return $this->db->insert_station_aditional_data($station,$status_name,$time,$status_value);
+		{
+			$time_formated=$this->format_time_from_sim_module($time);
+			return $this->db->insert_station_aditional_data($station,$status_name,$time_formated,$status_value);
+		}
 		else
 			return FAIL_RETURN;
 	}
@@ -96,7 +111,7 @@ class Model
 	}
 
 	function save_config($pass,$fm,$online_threshold_minutes,$primary_sensor,$primary_status)
-	{//if(is_null($online_threshold_minutes)) echo 'WTFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF';die();
+	{
 		$valid=true;
 		$ret=false;
 		if(!$this->validate->v_str($pass))
@@ -105,7 +120,6 @@ class Model
 			$pass=htmlspecialchars($pass);
 		if(!$this->validate->v_onetothousand($fm) && $fm!="" )
 			$valid=false;
-//if($fm="") $fm=NULL;
 		if(!$this->validate->v_onetothousand($online_threshold_minutes))
 			$valid=false;
 		if(!$this->validate->v_str($primary_sensor))

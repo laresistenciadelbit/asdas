@@ -6,7 +6,7 @@ $model=new Model($db_conf);
 
 //manejamos los datos recibidos de las estaciones
 $json_params = file_get_contents("php://input");
-json_decode($json_params); //almacena internamente si hubo errores 
+$json_data=json_decode($json_params,true); //almacena internamente si hubo errores 
 
 
 if('DEBUG' && $_SERVER['REMOTE_ADDR']!="127.0.0.1" && $_SERVER['REMOTE_ADDR']!='81.202.88.64' )
@@ -25,18 +25,23 @@ if('DEBUG' && $_SERVER['REMOTE_ADDR']!="127.0.0.1" && $_SERVER['REMOTE_ADDR']!='
 	fclose($fp_log);
 }
 
-if (strlen($json_params) > 0 && json_last_error() == JSON_ERROR_NONE )
+if (strlen($json_params) > 0 && json_last_error() == JSON_ERROR_NONE && isset($_GET['pw']) && $_GET['pw']==STATION_PASSWD )
 {
-	if(isset($json_params['sensor_name']))
-		$simple_output=$model->insert_station_data($json_params['station_id'],$json_params['sensor_name'],$json_params['time'],$json_params['sensor_val']);
+	if(isset($json_data['sensor_name']))
+		$simple_output=$model->insert_station_data($json_data['station_id'],$json_data['sensor_name'],$json_data['time'],$json_data['sensor_val']);
 	else
-		if(isset($json_params['status_name']))
-			$simple_output=$model->insert_station_aditional_data($json_params['station_id'],$json_params['status_name'],$json_params['time'],$json_params['status_val']);
+	{
+		if(isset($json_data['status_name']))
+			$simple_output=$model->insert_station_aditional_data($json_data['station_id'],$json_data['status_name'],$json_data['time'],$json_data['status_val']);
+		else
+			$simple_output="ERROR1: Parámetros incorrectos";
+	}
 }
 else //manejamos las peticiones del usuario
 {
 	//manejo de peticiones de escritura de configuración
 	if(isset($_GET['w']) ) //petición de escritura de configuración de la web
+	{
 		if( isset($_GET['pass']) && isset($_GET['fm']) && isset($_GET['online_threshold_minutes']) && isset($_GET['primary_sensor']) && isset($_GET['primary_status'])  )
 		{
 			if($model->save_config($_GET['pass'],$_GET['fm'],$_GET['online_threshold_minutes'],$_GET['primary_sensor'],$_GET['primary_status']))
@@ -44,7 +49,9 @@ else //manejamos las peticiones del usuario
 			else
 				$simple_output="<span style='color:red;'>Error al guardar la configuración</span>";
 		}
-
+		else
+			$simple_output="ERROR2: Parámetros incorrectos";
+	}
 	//recibimos peticiones por ajax para obtener los datos de una fecha concreta
 	if(isset($_GET['d']) )
 	{
@@ -95,9 +102,6 @@ else //manejamos las peticiones del usuario
 				$use_map=true;
 				//$unsorted_data=$model->get_all(); // <- ahora la pedimos por ajax con javascript
 		}
-
 	}
 }
-
-
 ?>

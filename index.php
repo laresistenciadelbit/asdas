@@ -9,6 +9,7 @@
 define('DEBUG', 'true'); // para recibir salida de errores
 define('DEBUG_REQUESTS_FILE', 'requests.log'); //Fichero de depuración para almacenar todas las peticiones web realizadas
 define('DATABASE_TYPE', 'sqlite-demo'); // <- opciones posibles: mysql, sqlite
+define('STATION_PASSWD', '1AeIoU!9'); // <- palabra de paso para identificar la autenticidad de las peticiones web provenientes de estaciones
 
 define('FAIL_RETURN', 'fail'); // mensaje devuelto a la estación en caso de fallo
 define('CORRECT_RETURN', 'ok'); // mensaje devuelto a la estación en caso satisfactorio
