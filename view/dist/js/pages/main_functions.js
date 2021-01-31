@@ -84,7 +84,7 @@ function filter_monthly_data(total_elements,date_now,data,status_name='',type='s
 			if(  !isNaN(tmp_avg) )
 				avg_output[i][j]=tmp_avg;
 		}
-	}if(type=='status_value')console.log(avg_output);
+	}
 	return {x:days_in_this_month , y:avg_output};
 }
 
