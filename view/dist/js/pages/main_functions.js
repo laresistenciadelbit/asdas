@@ -54,7 +54,7 @@ function calculate_day_start_time(cdate,cday){	return moment( cdate.getFullYear(
 function calculate_day_end_time(cdate,cday)  {	return moment( cdate.getFullYear().toString()+'-'+date_pad(cdate.getMonth()+1)+'-'+date_pad(cday) ).add(1, 'days').subtract(1, 'seconds').format('YYYY-MM-DD HH:mm:ss'); }
 
 //type y status_type es lo que va a definir si obtenemos los datos del sensor o del estado de la estación (estos dos últimos solo se definen si le pasamos un estado)
-function filter_monthly_data(total_elements,date_now,data,status_name=null,type='sensor_value')
+function filter_monthly_data(total_elements,date_now,data,status_name='',type='sensor_value')
 {
 	var avg_output=new Array(total_elements);
 	//generamos un vector con los días del mes actual
@@ -71,24 +71,24 @@ function filter_monthly_data(total_elements,date_now,data,status_name=null,type=
 			//tomamos los datos desde el principio al final del día
 			var current_day_data=_.filter(data[i], function(o) {if( o.time>start_day_str && o.time<end_day_str ) return o; } );
 			//var current_day_data=_.filter(data[i], function(o) {if( (o.time>start_day_str && o.time<end_day_str) || (o.time>start_day_str && o.time<end_day_str && type=='status_value' && o.status_name==status_type ) ) return o; } );
-			
+
 			//si sacamos el estado filtramos por tipo de estado
-			if(type=='status_value'){
+			if(type=='status_value' && status_name!='_ALL_'){
 				current_day_data=_.filter(current_day_data, function(o) {if( o.status_name==status_name ) return o; } );
 			}
 			
-			//filgramos para tomar solo los valores de los sensores
+			//filgramos para tomar solo los valores de los sensores/estado (según el tipo)
 			var sensor_values_current_day=_.groupBy(current_day_data,type);
 			//tomamos solo los números, los transformamos a formato numérico y calculamos su media en ese día
 			var tmp_avg=_.mean(Object.keys(sensor_values_current_day).map(Number)).toFixed(2);
 			if(  !isNaN(tmp_avg) )
 				avg_output[i][j]=tmp_avg;
 		}
-	}
+	}if(type=='status_value')console.log(avg_output);
 	return {x:days_in_this_month , y:avg_output};
 }
 
-function filter_daily_data(total_elements,fm,date_now,sensor_data,status_name=null,type='sensor_value')
+function filter_daily_data(total_elements,fm,date_now,sensor_data,status_name='',type='sensor_value')
 {
 	var avg_output=new Array(total_elements);
 	var mode_minutes;
@@ -134,7 +134,7 @@ function filter_daily_data(total_elements,fm,date_now,sensor_data,status_name=nu
 			var current_sample_data=_.filter(sensor_data[i], function(o) {if(o.time>start_min && o.time<end_min ) return o; } );
 			
 			//si sacamos el estado filtramos por tipo de estado
-			if(type=='status_value'){
+			if(type=='status_value' && status_name!='_ALL_'){
 				current_sample_data=_.filter(current_sample_data, function(o) {if( o.status_name==status_name ) return o; } );
 			}
 			//filgramos para tomar solo los valores de los sensores

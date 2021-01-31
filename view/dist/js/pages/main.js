@@ -30,7 +30,7 @@ function main(daily_charts,fm,to_month,to_date,online_threshold_minutes,primary_
 			date_now=new Date();
 		
 		ajax_date=moment(date_now).format('YYYY-MM-DD');
-	}	
+	}
 	
 	
 	// <!!!>The Calender (Tempus Dominus) //necesario antes del get de ajax, sino, literalmente ejecutaría los listeners del calendario, ya que el get se ejecuta de forma asínrona
@@ -66,9 +66,15 @@ function main(daily_charts,fm,to_month,to_date,online_threshold_minutes,primary_
 	})
 			
 			
-if( primary_sensor=="" )	//si no le hemos pasado un sensor principal cogemos el primero que encontremos
+	if( primary_sensor=="" )	//si no le hemos pasado un sensor principal cogemos el primero que encontremos
 		primary_sensor=unsorted_data[0].sensor_name;
-	if( primary_status=="" )	//si no le hemos pasado un sensor principal cogemos el primero que encontremos
+	if( primary_status=="" || primary_status=="_ALL_" )	//si no le hemos pasado un sensor principal, cogemos el primero que encontremos para el knob
+		var primary_status_for_knob=unsorted_data[0].status_name;
+	else
+		var primary_status_for_knob=primary_status;
+//main-status	primary_status_for_knob
+	
+	if( primary_status=="" && primary_status!="_ALL_" )	//si no le hemos pasado un sensor principal y no está en una estación concreta, usamos el primero que encontremos
 		primary_status=unsorted_data[0].status_name;
 	
 	var date_online;	//(online en los últimos x minutos (configurable))
@@ -82,6 +88,8 @@ if( primary_sensor=="" )	//si no le hemos pasado un sensor principal cogemos el 
 	var station_names=Object.keys(_.chain(unsorted_data).groupBy('station').value())//nombre de estaciones (se usa para caja de estádistica, para el gráfico de estado, y para el mapa)
 	var data_by_station=Object.values(_.groupBy(unsorted_data,'station'));//[0][1];	//array de datos ordenado por estaciones (se usa para el gráfico de estado y para el mapa)
 
+	var status_name_list=Object.keys(_.chain(unsorted_data).groupBy('status_name').value());
+	var data_by_status=Object.values(_.groupBy(unsorted_data,'status_name'));
 	/*----Database management of data----*/
 
 	/* 4 boxes widget */
@@ -135,28 +143,31 @@ if( primary_sensor=="" )	//si no le hemos pasado un sensor principal cogemos el 
 		sensor_chart_title=sensor_chart_title.charAt(0).toUpperCase() + sensor_chart_title.slice(1); 
 
 		var sensor_filtered_data=filter_monthly_data(sensor_data.length,date_now,sensor_data);
-	}
+	}	
 	$("#sensor-chart-title").html( "<i class='fas fa-chart-pie mr-1'></i> Valor medio de sensores en "+sensor_chart_title );
 	
 
 	/* status chart */
-		if(daily_charts)
-			var status_filtered_data=filter_daily_data(data_by_station.length,fm,date_now,data_by_station,primary_status,'status_value');
+		if(primary_status=="_ALL_")
+			var data_to_filter_in_status=data_by_status;
 		else
-			var status_filtered_data=filter_monthly_data(data_by_station.length,date_now,data_by_station,primary_status,'status_value');
-		
+			var data_to_filter_in_status=data_by_station;
+
+		if(daily_charts)
+			var status_filtered_data=filter_daily_data(data_to_filter_in_status.length,fm,date_now,data_to_filter_in_status,primary_status,'status_value');
+		else
+			var status_filtered_data=filter_monthly_data(data_to_filter_in_status.length,date_now,data_to_filter_in_status,primary_status,'status_value');
 
 	/* 3 knobs */
-	
 		//online stations (stations online/offline)
 		  $("#online-stations-knob").val(online_stations);
 		  
 		//avg batery level
 		  //obtener la media de todas las baterías.
-		  var battery_mean=_.filter(unsorted_data,{status_name: primary_status});
+		  var battery_mean=_.filter(unsorted_data,{status_name: primary_status_for_knob});
 		  battery_mean=_.meanBy(battery_mean,(a) => +(a.status_value) );	//+() obligatorio para convertirlo en float !!!
 		  $("#battery-knob").val(battery_mean.toFixed(2));
-		  $(".main-sensor").html(primary_status);
+		  $(".main-status").html(primary_status_for_knob);
 
 		//avg main sensor
 		  //obtener la media de todos los sensores principales
@@ -378,9 +389,14 @@ if(use_map)
   var statsGraphChartData = generate_chart(status_filtered_data.x);
 
   //añadimos los datos a la gráfica de estado
-  for(i=0;i<station_names.length;i++)
-	  statsGraphChartData.addToChart(station_names[i],status_filtered_data.y[i],"line");
-  
+	if(current_station=="")
+	{
+		for(i=0;i<station_names.length;i++)
+			statsGraphChartData.addToChart(station_names[i],status_filtered_data.y[i],"line");
+	} else {
+		for(i=0;i<status_name_list.length;i++)
+			statsGraphChartData.addToChart(status_name_list[i],status_filtered_data.y[i],"line");
+	}
   
   var statsGraphChartOptions = {
     maintainAspectRatio : false,
