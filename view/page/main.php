@@ -118,7 +118,7 @@ if (!defined('FROM_INDEX')) die();
               <div class="card-header border-0">
                 <h3 class="card-title">
                   <i class="fas fa-th mr-1"></i>
-                  Gráfico de estado de <span class="main-status">batería</span>
+                  Gráfico de estados
                 </h3>
 
                 <div class="card-tools">
@@ -150,7 +150,7 @@ if (!defined('FROM_INDEX')) die();
                     <input id="battery-knob" type="text" class="knob" data-readonly="true"         value="" data-width="60" data-height="60"
                            data-fgColor="#39CCCC">
 
-                    <div class="text-white">Valor medio total de <span class="main-status">batería</span></div>
+                    <div class="text-white">Valor medio total de <span class="main-status"></span></div>
                   </div>
                   <!-- ./col -->
                   <div class="col-4 text-center">
