@@ -20,7 +20,7 @@ class Mydb extends SQLite3
 	
 	function insert_station_data($station,$sensor_name,$time,$sensor_value)
 	{
-		$ret = $this->exec("INSERT INTO station_sensors values ('".$station."','".$sensor_name."','".$sensor_value."','".$time."');");
+		$ret = $this->exec("INSERT INTO station_sensors values ('".$station."','".$sensor_name."','".$time."','".$sensor_value."');");
 		if(!$ret) {
 			if(DEBUG)
 				return $this->lastErrorMsg();
