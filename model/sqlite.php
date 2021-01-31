@@ -6,6 +6,21 @@ class Mydb extends SQLite3
 	function __construct($db_conf) 
 	{
 		$this->open('model/db/'.$db_conf);
+		
+		if(DATABASE_TYPE=='sqlite-demo')
+			$this->demo_data_offset();
+	}
+	
+	function demo_data_offset()	//Aumentará un día si no hay datos hoy, ya que es una base de datos de demostración. (NECESARIO que time no sea clave primaria para que permita modificar coincidiendo con otras fechas durante la ejecución)
+	{
+		do{
+			$ret = $this->querySingle( "SELECT count(station) from station_sensors where time >= '".date("Y-m-d")." 00:00:00'" );
+			if( !$ret )
+			{
+				$this->exec(" UPDATE station_sensors SET time=DateTime(time, 'LocalTime', '+1 Day') ");
+				$this->exec(" UPDATE station_status  SET time=DateTime(time, 'LocalTime', '+1 Day') ");
+			}
+		}while(!$ret);
 	}
 
 	function load_config()
