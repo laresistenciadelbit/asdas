@@ -21,7 +21,7 @@ if (!defined('FROM_INDEX')) die();
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <!--a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a-->
             </div>
           </div>
           <!-- ./col -->
@@ -36,7 +36,7 @@ if (!defined('FROM_INDEX')) die();
               <div class="icon">
                 <i class="ion ion-wifi"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <!--a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a-->
             </div>
           </div>
           <!-- ./col -->
@@ -51,7 +51,7 @@ if (!defined('FROM_INDEX')) die();
               <div class="icon">
                 <i class="ion ion-thermometer"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <!--a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a-->
             </div>
           </div>
           <!-- ./col -->
@@ -66,7 +66,7 @@ if (!defined('FROM_INDEX')) die();
               <div class="icon">
                 <i class="ion ion-battery-low"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <!--a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a-->
             </div>
           </div>
           <!-- ./col -->
@@ -118,7 +118,7 @@ if (!defined('FROM_INDEX')) die();
               <div class="card-header border-0">
                 <h3 class="card-title">
                   <i class="fas fa-th mr-1"></i>
-                  Gráfico de estados
+                  Gráfico de estado<?php if ($current_station=='') echo ' de <span class="main-status"></span>'; else echo 's'; ?>
                 </h3>
 
                 <div class="card-tools">
