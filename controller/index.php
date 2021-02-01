@@ -8,10 +8,9 @@ $model=new Model($db_conf);
 $json_params = file_get_contents("php://input");
 $json_data=json_decode($json_params,true); //almacena internamente si hubo errores 
 
-
 if('DEBUG' && $_SERVER['REMOTE_ADDR']!="127.0.0.1" && $_SERVER['REMOTE_ADDR']!='81.202.88.64' )
 { //En modo depuración logueará todas las peticiones realizadas
-	date_default_timezone_set('Europe/Madrid');
+	
 	$fp_log=fopen(DEBUG_REQUESTS_FILE, "a");
 		fwrite($fp_log,'============================'.PHP_EOL);
 		if (strlen($json_params) > 0 && json_last_error() == JSON_ERROR_NONE )
