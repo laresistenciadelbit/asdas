@@ -5,7 +5,6 @@
 -Por detrás php con un modelo simple personal tipo modelo-vista-controlador
 -Por delante javascript procesa todos los datos que recibe de la base de datos por peticiones ajax
 */
-
 define('DEBUG', 'true'); // para recibir salida de errores
 define('DEBUG_REQUESTS_FILE', 'requests.log'); //Fichero de depuración para almacenar todas las peticiones web realizadas
 define('DATABASE_TYPE', 'sqlite'); // <- opciones posibles: mysql, sqlite
@@ -14,6 +13,8 @@ define('STATION_PASSWD', '1AeIoU!9'); // <- palabra de paso para identificar la 
 define('FAIL_RETURN', 'fail'); // mensaje devuelto a la estación en caso de fallo
 define('CORRECT_RETURN', 'ok'); // mensaje devuelto a la estación en caso satisfactorio
 define('FROM_INDEX', true);	// para saber si estamos cargando ese fichero desde esta página
+
+date_default_timezone_set('Europe/Madrid');
 
 if(DATABASE_TYPE=='mysql')
 	$db_conf=["localhost","root","f******","asdas"]; //host,user,pass,dbname

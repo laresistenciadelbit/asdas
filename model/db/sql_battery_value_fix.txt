@@ -1,10 +1,10 @@
 select station, time, status_value as battery, abs( status_value + strftime('%d',time) ) FROM station_status where status_name='battery';
 
 
-update station_status set status_value=status_value+ strftime('%d',time) where status_name='battery';
+update station_status set status_value=status_value+(strftime('%d',time)/2) where status_name='battery';
 update station_status set status_value=95 where status_value>99 and status_name='battery';
 update station_status set status_value=6 where status_value<1 and status_name='battery';
-
+update station_status set status_value=status_value-11 where status_value>60 and status_name='battery';
 
 --------------------
 
@@ -21,7 +21,15 @@ update station_status set status_value=status_value+12 where status_name='batter
 
 -- FIX FOR blasco ibañez AND puerto
 
-update station_status set status_value=status_value/2 where status_name='battery' and station != "uv";
+update station_status set status_value=status_value/1.5 where status_name='battery' and station != "uv";
 update station_status set status_value=status_value+10 where status_name='battery' and station != "uv";
 
 
+
+
+-- fix for temp.
+
+
+
+update station_sensors set sensor_value=sensor_value-4 where sensor_name='temperatura' and strftime('%H',time) between "00" and "07";
+update station_sensors set sensor_value=sensor_value+4 where sensor_name='temperatura' and strftime('%H',time) between "10" and "18";
