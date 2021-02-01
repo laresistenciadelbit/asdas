@@ -1,4 +1,0 @@
-update station_sensors set time=DateTime(time, 'LocalTime', '+60 Day');
-update station_status set time=DateTime(time, 'LocalTime', '+60 Day');
-
--- select DateTime(time, 'LocalTime', '+60 Day') from station_sensors;

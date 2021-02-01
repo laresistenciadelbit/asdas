@@ -8,7 +8,7 @@ $model=new Model($db_conf);
 $json_params = file_get_contents("php://input");
 $json_data=json_decode($json_params,true); //almacena internamente si hubo errores 
 
-if('DEBUG' && $_SERVER['REMOTE_ADDR']!="127.0.0.1" && $_SERVER['REMOTE_ADDR']!='81.202.88.64' )
+if('DEBUG' && $_SERVER['REMOTE_ADDR']!="127.0.0.1" /*&& $_SERVER['REMOTE_ADDR']!='x.x.x.x'*/ )
 { //En modo depuración logueará todas las peticiones realizadas
 	
 	$fp_log=fopen(DEBUG_REQUESTS_FILE, "a");
@@ -24,29 +24,21 @@ if('DEBUG' && $_SERVER['REMOTE_ADDR']!="127.0.0.1" && $_SERVER['REMOTE_ADDR']!='
 	fclose($fp_log);
 }
 
-if (strlen($json_params) > 0 && json_last_error() == JSON_ERROR_NONE && isset($_GET['pw']) && $_GET['pw']==STATION_PASSWD )
+if (strlen($json_params) > 0 && json_last_error() == JSON_ERROR_NONE ) 
 {
-	if(isset($json_data['sensor_name']))
-		$simple_output=$model->insert_station_data($json_data['station_id'],$json_data['sensor_name'],$json_data['time'],$json_data['sensor_val']);
-	else
-	{
-		if(isset($json_data['status_name']))
-			$simple_output=$model->insert_station_aditional_data($json_data['station_id'],$json_data['status_name'],$json_data['time'],$json_data['status_val']);
-		else
-			$simple_output="ERROR1: Parámetros incorrectos";
-	}
+
 }
 else //manejamos las peticiones del usuario
 {
 	//manejo de peticiones de escritura de configuración
 	if(isset($_GET['w']) ) //petición de escritura de configuración de la web
 	{
-		if( isset($_GET['pass']) && isset($_GET['fm']) && isset($_GET['online_threshold_minutes']) && isset($_GET['primary_sensor']) && isset($_GET['primary_status'])  )
+		if( isset($_GET['pass']) /*&& isset($_GET['fm']) && ... */  )
 		{
-			if($model->save_config($_GET['pass'],$_GET['fm'],$_GET['online_threshold_minutes'],$_GET['primary_sensor'],$_GET['primary_status']))
+			/*if($model->save_config($_GET['pass'],$_GET['fm'],$_GET['online_threshold_minutes'],$_GET['primary_sensor'],$_GET['primary_status']))
 				$simple_output="<span style='color:green;'>Configuración guardada</span>";
 			else
-				$simple_output="<span style='color:red;'>Error al guardar la configuración</span>";
+				$simple_output="<span style='color:red;'>Error al guardar la configuración</span>";*/
 		}
 		else
 			$simple_output="ERROR2: Parámetros incorrectos";
@@ -54,25 +46,22 @@ else //manejamos las peticiones del usuario
 	//recibimos peticiones por ajax para obtener los datos de una fecha concreta
 	if(isset($_GET['d']) )
 	{
-		if(isset($_GET['s']) && !empty($_GET['s']) )
+		/*if(isset($_GET['s']) && !empty($_GET['s']) )
 			$simple_output=$model->get_station($_GET['d'],$_GET['s']);
 		else
-			$simple_output=$model->get_all($_GET['d']);
+			$simple_output=$model->get_all($_GET['d']);*/
 	}
 	
 	//configuración de la vista
 	if(!isset($simple_output))	//si no se hizo una petición de escritura de configuración, o si se hizo, pero ésta falló
 	{
-		$stations=$model->get_station_names();
 		$config=$model->get_config();
 		
-		if(isset($_GET['p'])) //if(isset($_GET['p']) && $_GET['p']!='station')
+		if(isset($_GET['p']))
 			$current_view=$_GET['p'];
 		else
 			$current_view="main";
 		
-		$current_station=''; //la ponemos vacía porque si entra en el main la introducirá en javascript
-		$use_map=false;	// <- activa el script del api de mapas de osm según en que sección (por defectro falso, luego se activa en las secciones que lo queramos)	
 		switch($current_view)
 		{
 			case 'admin':
@@ -86,20 +75,16 @@ else //manejamos las peticiones del usuario
 				}
 				$current_page="Administración";
 			break;
-			case 'station':
-				$current_station=$_GET['s'];
-				$current_page=$_GET['s'];
-				$use_map=true;
+			case 'category':
+				$current_station=$_GET['c'];
+				$current_page=$_GET['c'];
 				$current_view='main';	//actúa como main (reutiliza la misma plantilla)
 			break;
 			case 'contact':
 				$current_page="Contacto";
 			break;
 			default:
-				$current_page="Arduino Sim Data Adquisition System";
-				//$current_view='main';
-				$use_map=true;
-				//$unsorted_data=$model->get_all(); // <- ahora la pedimos por ajax con javascript
+				$current_page="adminlte php skeleton";
 		}
 	}
 }

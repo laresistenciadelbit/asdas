@@ -4,8 +4,8 @@
     <a href="index.php" class="brand-link">
       <img src="view/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
-      <span class="brand-text font-weight-light">ASDAS</span>
-	  <span style="color:#efefef;font-size:9.5px;position:absolute;left:62px;top:34px;">arduino sim data adquisition system</span>
+      <span class="brand-text font-weight-light">APS</span>
+	  <span style="color:#efefef;font-size:9.5px;position:absolute;left:62px;top:34px;">adminlte php skeleton</span>
     </a>
     <!-- Sidebar -->
     <div class="sidebar">
@@ -28,23 +28,23 @@
             <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
-                Estaciones
+                Categorías
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
 				<?php
-				foreach($stations as $station)
+				foreach($categories as $cat)
 				{
-					if(isset($current_station) && $current_station==$station)
+					if(isset($current_cat) && $current_cat==$cat)
 						$active_navtreeview="active";
 					else 
 						$active_navtreeview="";
 					
 					echo '<li class="nav-item">
-					<a href="./index.php?p=station&s='.$station.'" class="nav-link '. $active_navtreeview .'">
+					<a href="./index.php?p=cat&s='.$cat.'" class="nav-link '. $active_navtreeview .'">
 					  <i class="far fa-circle nav-icon"></i>
-					  <p>'.$station.'</p>
+					  <p>'.$cat.'</p>
 					</a>
 					</li>';
 				}
