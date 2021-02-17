@@ -97,7 +97,7 @@ else //manejamos las peticiones del usuario
 			break;
 			default:
 				$current_page="Arduino Sim Data Adquisition System";
-				//$current_view='main';
+				$current_view='main';
 				$use_map=true;
 				//$unsorted_data=$model->get_all(); // <- ahora la pedimos por ajax con javascript
 		}
