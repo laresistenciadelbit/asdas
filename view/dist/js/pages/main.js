@@ -6,7 +6,7 @@
 	\	to_date					 -> string  -> fecha de la que tomaremos el día para mostrarlo en la gráfica (si no, será el día actual)
 	\	online_threshold_minutes -> numeric -> minutos de margen para declarar si una estación está online o no (es decir, si recibimos datos cada 5 minutos, lo suyo es ponerle el límite ligeramente mayor de 5 mintuos.
 */
-function main(daily_charts,fm,to_month,to_date,online_threshold_minutes,primary_sensor,primary_status,current_station) {
+function main(daily_charts,fm,to_month,to_date,online_threshold_minutes,primary_sensor,primary_status,current_station,sensor_maps) {
   'use strict'
 
 	var unsorted_data;
@@ -58,6 +58,29 @@ function main(daily_charts,fm,to_month,to_date,online_threshold_minutes,primary_
 		}
 		else
 			$("#boxes").show();
+
+	//mapeamos todos los valores necesarios
+//	var unsorted_mod=unsorted_data;
+//console.log(sensor_maps.length);
+console.log(sensor_maps);
+	var x;
+	for(var i=0;i<sensor_maps.length;i++)
+	{
+		if( sensor_maps[i].sensor_map != "" )
+		{
+			for(var j=0;j<unsorted_data.length;j++)
+			{
+				if(unsorted_data[j].sensor_name==sensor_maps[i].sensor_name)
+				{
+					x=unsorted_data[j].sensor_value;	//usaremos x en la fórmula
+if(j==1)console.log(unsorted_data[j].sensor_value);
+					unsorted_data[j].sensor_value=eval(sensor_maps[i].sensor_map);
+if(j==1)console.log(unsorted_data[j].sensor_value);
+				}
+			}
+		}
+	}
+//console.log(unsorted_mod);
 
 	//destruímos las gráficas antes de regenerarlas
 	Chart.helpers.each(Chart.instances, function(instance){	//recogemos las posibles instancias que haya de gráficas y las destruímos (solo las 2 que vamos a rehacer)

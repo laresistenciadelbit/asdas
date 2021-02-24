@@ -5,7 +5,7 @@ class Validation
 {
 	function v_str($s)
 	{
-		if(strlen($s<40))
+		if(strlen($s)<40)
 			return true;
 		else 
 			return false;
@@ -40,6 +40,14 @@ class Validation
 		if( $n>0 && $n<=1000 )
 			return true;
 		else 
+			return false;
+	}
+	
+	function v_eval_operations($op)
+	{
+		if( strlen($op)<2000 && preg_match("#[\d\.\+\-\*\x\s\(\)]+$#", $op) )
+			return true;
+		else
 			return false;
 	}
 }

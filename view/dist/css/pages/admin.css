@@ -9,3 +9,45 @@ margin-top : 15px;
 margin-left: 15px;
 }
 .config-margin{margin-left:7px;}
+
+.no_input_text_style {
+    border:none; 
+    border-color:transparent; 
+    background-color:transparent;
+	vertical-align:sub;
+}
+
+.alert-warning-original {
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+}
+
+.alert-warning-mod {
+    color: #8a6d3b;
+    border-left-color: #aa6708;
+}
+.alert-warning-mod p{
+	color:#222233;
+}
+
+.alert-info-original {
+    color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+
+.alert-info-mod {
+    color: #1b809e;
+    border-left-color: #aa6708;
+}
+.alert-info-mod p{
+	color:#222233;
+}
+
+.alert-success-original {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+

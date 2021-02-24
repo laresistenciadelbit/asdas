@@ -145,7 +145,20 @@ class Model
 	{
 		return $this->db->select_string_array("SELECT station from station_sensors group by station;");
 	}
-
+	
+	function get_sensor_names()
+	{
+		return $this->db->select_string_array("SELECT sensor_name from station_sensors group by sensor_name;");
+	}
+	
+	function get_sensor_maps()
+	{
+		return $this->db->select_json_array("SELECT ss.sensor_name,sm.sensor_map FROM station_sensors ss
+							LEFT JOIN sensor_mapping sm USING(sensor_name)
+							group by sensor_name
+							;");
+	}
+	
 	function save_config($pass,$fm,$online_threshold_minutes,$primary_sensor,$primary_status)
 	{
 		$valid=true;
@@ -172,6 +185,52 @@ class Model
 		
 		return $ret;
 	}
-}
+	
+	function save_mapping($sensors,$maps)
+	{
+		$valid=true;
+		$ret=false;
+		for($i=0;$i<sizeof($sensors);$i++)
+		{
+			if(!$this->validate->v_str($sensors[$i]))
+				$valid=false;
+			else
+				$sensors[$i]=htmlspecialchars($sensors[$i]);
+		}		
 
+		foreach($maps as $map)
+		{
+			if(!$this->validate->v_eval_operations($map) && $map!="")
+			{
+				$valid=false;
+				break;
+			}
+		}
+
+		if($valid)
+		{
+			for($i=0;$i<sizeof($sensors);$i++)
+			{
+				if($maps[$i]!="")	//si el campo no está vacío
+				{
+					if(!$this->db->select_simple("SELECT sensor_name FROM sensor_mapping WHERE sensor_name='".$sensors[$i]."';"))	//si no existe una fila con el mapeado del sensor la creamos
+					{
+						$ret=$this->db->insert("INSERT INTO sensor_mapping VALUES ('".$sensors[$i]."' , '".$maps[$i]."');");
+						if(!$ret)
+							break;
+					}
+					else
+					{
+						$ret=$this->db->update("UPDATE sensor_mapping set sensor_map='".$maps[$i]."' WHERE sensor_name='".$sensors[$i]."';");
+						if(!$ret)
+							break;
+					}
+				}
+			}
+		}
+		
+		return $ret;
+	}
+	
+}
 ?>

@@ -38,19 +38,6 @@ if (strlen($json_params) > 0 && json_last_error() == JSON_ERROR_NONE && isset($_
 }
 else //manejamos las peticiones del usuario
 {
-	//manejo de peticiones de escritura de configuración
-	if(isset($_GET['w']) ) //petición de escritura de configuración de la web
-	{
-		if( isset($_GET['pass']) && isset($_GET['fm']) && isset($_GET['online_threshold_minutes']) && isset($_GET['primary_sensor']) && isset($_GET['primary_status'])  )
-		{
-			if($model->save_config($_GET['pass'],$_GET['fm'],$_GET['online_threshold_minutes'],$_GET['primary_sensor'],$_GET['primary_status']))
-				$simple_output="<span style='color:green;'>Configuración guardada</span>";
-			else
-				$simple_output="<span style='color:red;'>Error al guardar la configuración</span>";
-		}
-		else
-			$simple_output="ERROR2: Parámetros incorrectos";
-	}
 	//recibimos peticiones por ajax para obtener los datos de una fecha concreta
 	if(isset($_GET['d']) )
 	{
@@ -58,6 +45,38 @@ else //manejamos las peticiones del usuario
 			$simple_output=$model->get_station($_GET['d'],$_GET['s']);
 		else
 			$simple_output=$model->get_all($_GET['d']);
+	}
+	
+	//manejo de peticiones de escritura de configuración
+	if(isset($_GET['w']) ) //petición de escritura de configuración de la web
+	{
+		$config=$model->get_config();
+		if( isset($_GET['pass_control']) && $_GET['pass_control']==$config['pass'])	//controlamos que nos haya enviado la contraseña y sea correcta
+		{
+			//caso de guardar configuración general
+			if( isset($_GET['pass']) && isset($_GET['fm']) && isset($_GET['online_threshold_minutes']) && isset($_GET['primary_sensor']) && isset($_GET['primary_status'])  )
+			{
+				if($model->save_config($_GET['pass'],$_GET['fm'],$_GET['online_threshold_minutes'],$_GET['primary_sensor'],$_GET['primary_status']))
+					$simple_output="<span style='color:green;'>Configuración guardada</span>";
+				else
+					$simple_output="<span style='color:red;'>Error al guardar la configuración</span>";
+			}
+			else	//caso de guardar configuración de mapeo de sensores
+			{
+				if( isset($_GET['sensor_name']) && isset($_GET['sensor_map']) && sizeof($_GET['sensor_name'])==sizeof($_GET['sensor_map']) )
+				{
+					//var_dump($_GET['sensor_name']);echo '<br><br>';var_dump($_GET['sensor_map']);die();
+					if($model->save_mapping($_GET['sensor_name'],$_GET['sensor_map']))
+						$simple_output="<span style='color:green;'>Configuración guardada</span>";
+					else
+						$simple_output="<span style='color:red;'>Error al guardar la configuración</span>";
+				}
+				else
+					$simple_output="ERROR2: Parámetros incorrectos";
+			}
+		} else {
+			$simple_output="Contraseña incorrecta";
+		}
 	}
 	
 	//configuración de la vista
@@ -84,21 +103,24 @@ else //manejamos las peticiones del usuario
 					}
 					fclose($fp_log);
 				}
+				$sensor_maps=$model->get_sensor_maps();
 				$current_page="Administración";
 			break;
 			case 'station':
 				$current_station=$_GET['s'];
 				$current_page=$_GET['s'];
 				$use_map=true;
+				$sensor_maps=$model->get_sensor_maps();
 				$current_view='main';	//actúa como main (reutiliza la misma plantilla)
 			break;
 			case 'contact':
 				$current_page="Contacto";
 			break;
 			default:
-				$current_page="Arduino Sim Data Adquisition System";
-				$current_view='main';
 				$use_map=true;
+				$sensor_maps=$model->get_sensor_maps();
+				$current_page="Arduino Sim Data Adquisition System";
+				$current_view='main';				
 				//$unsorted_data=$model->get_all(); // <- ahora la pedimos por ajax con javascript
 		}
 	}
