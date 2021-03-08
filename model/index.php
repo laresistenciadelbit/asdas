@@ -35,7 +35,7 @@ class Model
 		return $this->config;
 	}
 
-	function validate_station_data($station,$setting_name,$time,$setting_value)
+	function validate_station_data(&$station,&$setting_name,&$time,&$setting_value)
 	{
 		$valid=true;
 		if(!$this->validate->v_str($station))
@@ -56,7 +56,7 @@ class Model
 		
 	function format_time_from_sim_module($time)	//Cambia el formato de fecha que obtiene el módulo Sim de la estación de telefonía al formato de la base de datos: 21/01/31,00:52:57+04 ->  2021-01-31 00:52:57	
 	{
-		return ( '20'.str_replace( "/", "-", substr($time,0,8) ).' '.substr($time,9,8) );
+		return ( substr(date("Y"),0,2).str_replace( "/","-",str_replace( ","," ",substr($time,0,strlen($time)-3) ) ) );
 	}
 
 	function insert_station_data($station,$sensor_name,$time,$sensor_value)
@@ -67,7 +67,7 @@ class Model
 		
 		if($valid)
 		{
-			$time_formated=$this->format_time_from_sim_module($time);
+			$time=$this->format_time_from_sim_module($time);
 			return $this->db->insert("INSERT INTO station_sensors values ('".$station."','".$sensor_name."','".$time."','".$sensor_value."');");
 		}
 		else
@@ -82,7 +82,7 @@ class Model
 		
 		if($valid)
 		{
-			$time_formated=$this->format_time_from_sim_module($time);
+			$time=$this->format_time_from_sim_module($time);
 			return $this->db->insert("INSERT INTO station_status values ('".$station."','".$status_name."','".$time."','".$status_value."');");
 		}
 		else
