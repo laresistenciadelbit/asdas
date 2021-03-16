@@ -62,8 +62,8 @@ class Mydb extends SQLite3
 		
 		$array=array();
 		while($row = $ret->fetchArray(SQLITE3_ASSOC))
-		{	
-			$row=array_map('utf8_encode', $row);
+		{
+			//$row=array_map('utf8_encode', $row);
 			array_push($array,reset($row));	//https://www.designcise.com/web/tutorial/how-to-get-the-first-element-of-an-array-in-php
 		}
 		return $array;
@@ -88,7 +88,7 @@ class Mydb extends SQLite3
 		$array=array();
 		while($row = $ret->fetchArray(SQLITE3_ASSOC))
 		{
-			$row = array_map('utf8_encode', $row); // https://stackoverflow.com/questions/20694317/json-encode-function-special-characters
+			//$row = array_map('utf8_encode', $row); // https://stackoverflow.com/questions/20694317/json-encode-function-special-characters
 			array_push($array,$row);
 		}
 		return json_encode($array);

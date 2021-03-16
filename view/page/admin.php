@@ -69,11 +69,8 @@ if( $config['pass']=='' || ( isset($_GET['pass']) && $_GET['pass']==htmlspecialc
 			  <!-- /.card -->
 			</div>
 			
+			<!-- mapeo de sensores -->
 			
-			
-			
-	<?php if('DEBUG' && file_exists(DEBUG_REQUESTS_FILE) ) 
-	{?>
 			<div class="col-md-6">
 				<div class="card card-primary">
 					<div class="card-header">
@@ -133,10 +130,12 @@ if( $config['pass']=='' || ( isset($_GET['pass']) && $_GET['pass']==htmlspecialc
 					<!-- /.card-body -->
 				</div>
 			  </div>
-	<?php
-	}?>
 		  </div>
-
+		  
+		  <!-- requests log -->
+		  
+	<?php if('DEBUG' && file_exists(DEBUG_REQUESTS_FILE) ) 
+	{?>
 		  <div class="row">
 			<div class="col-md-6">
 				<div class="card card-primary">
@@ -175,7 +174,8 @@ if( $config['pass']=='' || ( isset($_GET['pass']) && $_GET['pass']==htmlspecialc
 			  <!-- /.card -->
 			</div>
 		</div>
-
+	<?php
+	}?>
 		</section>
 		
 	<?php

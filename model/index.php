@@ -41,11 +41,11 @@ class Model
 		if(!$this->validate->v_str($station))
 			$valid=false;
 		else
-			$station=htmlspecialchars($station);
+			$station=htmlspecialchars($station,ENT_QUOTES);
 		if(!$this->validate->v_str($setting_name))
 			$valid=false;
 		else
-			$setting_name=htmlspecialchars($setting_name);
+			$setting_name=htmlspecialchars($setting_name,ENT_QUOTES);
 		if(!$this->validate->v_time($time))
 			$valid=false;
 		if(!$this->validate->v_value($setting_value))
@@ -61,8 +61,8 @@ class Model
 
 	function insert_station_data($station,$sensor_name,$time,$sensor_value)
 	{
-		$station=utf8_decode($station);
-		$sensor_name=utf8_decode($sensor_name);
+		//$station=utf8_decode($station);
+		//$sensor_name=utf8_decode($sensor_name);
 		$valid=$this->validate_station_data($station,$sensor_name,$time,$sensor_value);
 		
 		if($valid)
@@ -76,8 +76,8 @@ class Model
 
 	function insert_station_aditional_data($station,$status_name,$time,$status_value)
 	{
-		$station=utf8_decode($station);
-		$status_name=utf8_decode($status_name);
+		//$station=utf8_decode($station);
+		//$status_name=utf8_decode($status_name);
 		$valid=$this->validate_station_data($station,$status_name,$time,$status_value);
 		
 		if($valid)
@@ -100,7 +100,7 @@ class Model
 	function get_station($date,$station)
 	{
 		if( $this->validate->v_str($station) && ( $this->validate->v_date($date) || $date=='' ) )
-			return $this->get_all_data($date,utf8_decode(htmlspecialchars($station)));	//importante el utf8_decode en base de datos sqlite, ya que sqlite en php no admite una conexión con codificación utf8
+			return $this->get_all_data($date,utf8_decode(htmlspecialchars($station,ENT_QUOTES)));	//importante el utf8_decode en base de datos sqlite, ya que sqlite en php no admite una conexión con codificación utf8
 		else
 			return false;
 	}

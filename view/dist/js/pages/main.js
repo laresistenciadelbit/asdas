@@ -46,7 +46,7 @@ function main(daily_charts,fm,to_month,to_date,online_threshold_minutes,primary_
 	$(".loading").show();
 	
 	$.get( "index.php", { d: ajax_date, s: current_station } ).done(
-		function( unsorted_data ) {	
+		function( unsorted_data ) {
 //console.log(unsorted_data);
 		unsorted_data=JSON.parse( unsorted_data );	
 		if(unsorted_data.length==0)
@@ -60,27 +60,24 @@ function main(daily_charts,fm,to_month,to_date,online_threshold_minutes,primary_
 			$("#boxes").show();
 
 	//mapeamos todos los valores necesarios
-//	var unsorted_mod=unsorted_data;
-//console.log(sensor_maps.length);
-console.log(sensor_maps);
+//console.log(sensor_maps);
 	var x;
 	for(var i=0;i<sensor_maps.length;i++)
 	{
-		if( sensor_maps[i].sensor_map != "" )
+		if( sensor_maps[i].sensor_map != null && sensor_maps[i].sensor_map != "" )
 		{
 			for(var j=0;j<unsorted_data.length;j++)
 			{
 				if(unsorted_data[j].sensor_name==sensor_maps[i].sensor_name)
 				{
 					x=unsorted_data[j].sensor_value;	//usaremos x en la fórmula
-if(j==1)console.log(unsorted_data[j].sensor_value);
+//if(j==1)console.log(unsorted_data[j].sensor_value);
 					unsorted_data[j].sensor_value=eval(sensor_maps[i].sensor_map);
-if(j==1)console.log(unsorted_data[j].sensor_value);
+//if(j==1)console.log(unsorted_data[j].sensor_value);
 				}
 			}
 		}
 	}
-//console.log(unsorted_mod);
 
 	//destruímos las gráficas antes de regenerarlas
 	Chart.helpers.each(Chart.instances, function(instance){	//recogemos las posibles instancias que haya de gráficas y las destruímos (solo las 2 que vamos a rehacer)
@@ -89,15 +86,15 @@ if(j==1)console.log(unsorted_data[j].sensor_value);
 	})
 			
 			
-	if( primary_sensor=="" )	//si no le hemos pasado un sensor principal cogemos el primero que encontremos
+	if( primary_sensor=="" || primary_sensor===null )	//si no le hemos pasado un sensor principal cogemos el primero que encontremos
 		primary_sensor=unsorted_data[0].sensor_name;
-	if( primary_status=="" || primary_status=="_ALL_" )	//si no le hemos pasado un sensor principal, cogemos el primero que encontremos para el knob
+	if( primary_status=="" || primary_status===null || primary_status=="_ALL_" )	//si no le hemos pasado un sensor principal, cogemos el primero que encontremos para el knob
 		var primary_status_for_knob=unsorted_data[0].status_name;
 	else
 		var primary_status_for_knob=primary_status;
 //main-status	primary_status_for_knob
 	
-	if( primary_status=="" && primary_status!="_ALL_" )	//si no le hemos pasado un sensor principal y no está en una estación concreta, usamos el primero que encontremos
+	if( primary_status=="") //if( primary_status=="" && primary_status!="_ALL_" )	//si no le hemos pasado un sensor principal y no está en una estación concreta, usamos el primero que encontremos
 		primary_status=unsorted_data[0].status_name;
 	
 	var date_online;	//(online en los últimos x minutos (configurable))
@@ -227,44 +224,8 @@ if(j==1)console.log(unsorted_data[j].sensor_value);
   })
   $('.connectedSortable .card-header, .connectedSortable .nav-tabs-custom').css('cursor', 'move')
 
-/*
-  // jQuery UI sortable for the todo list
-  $('.todo-list').sortable({
-    placeholder         : 'sort-highlight',
-    handle              : '.handle',
-    forcePlaceholderSize: true,
-    zIndex              : 999999
-  })
-*/
-
-
-  // bootstrap WYSIHTML5 - text editor
-//  $('.textarea').summernote()
-
-
-/*  $('.daterange').daterangepicker({
-    ranges   : {
-      'Today'       : [moment(), moment()],
-      'Yesterday'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-      'Last 7 Days' : [moment().subtract(6, 'days'), moment()],
-      'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-      'This Month'  : [moment().startOf('month'), moment().endOf('month')],
-      'Last Month'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-    },
-    startDate: moment().subtract(29, 'days'),
-    endDate  : moment()
-  }, function (start, end) {
-    //window.alert('You chose: ' + start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
-  })
-*/
-
 /* jQueryKnob */
 $('.knob').knob()
-
-
-
-
-
 /* OSM MAP  */
 if(use_map)
 {
@@ -280,7 +241,6 @@ if(use_map)
 		var station_by_time=_.groupBy(data_by_station[i],"time");
 		var station_by_time_values=Object.values(station_by_time);
 		var date_aux=Object.entries(station_by_time)[Object.entries(station_by_time).length - 1][0];	//tomamos la última fecha del vector
-		
 //console.log(" "+i+" : ");	
 //console.log(station_by_time);	
 
@@ -294,8 +254,6 @@ if(use_map)
 		}
 //		station_by_time=_.filter(station_by_time, function(o) { console.log(o); if( Object.values(o[0])>start_day_str && Object.values(o[0])<end_day_str ) return o; } );
 
-		
-		
 //console.log(station_by_time);
 		for(var j=0;j<Object.keys(station_by_time).length;j++)
 		{
@@ -320,11 +278,13 @@ if(use_map)
 					{
 						lat_found=true;
 						lat_aux=station_by_time_values[j][k].status_value;
+						date_aux=station_by_time_values[j][k].time;
 					}
 					if(station_by_time_values[j][k].status_name=="lon")
 					{
 						lon_found=true;
 						lon_aux=station_by_time_values[j][k].status_value;
+						date_aux=station_by_time_values[j][k].time;
 					}
 				}
 			}
@@ -336,15 +296,16 @@ if(use_map)
 	}
 	
 	map_content=new Array(station_locations.length); //almacenaremos marcadores y rutas aquí
-	
+//console.log(station_locations);
 	//dibujamos marcadores y rutas con las coordenadas obtenidas
 	for(var i=0;i<station_locations.length;i++)
 	{
 		map_content[i]=new Object();
 		if(station_locations[i].length > 0)
-		{	//https://leafletjs.com/reference-1.7.1.html#marker
-			var popup_marker_message="<center><b>"+station_names[i]+"</b><br>"+station_locations[i][0][0]+"</center>";
-			map_content[i].marker=new L.Marker([ station_locations[i][0][1], station_locations[i][0][2] ], {title:station_names[i]}, {opacity:0.8} ).bindPopup(popup_marker_message).openPopup();//.addTo(leaflet_map);	//tomamos el primer array [0] de cada estación, ya que es el elemento con la última actualización de ubicación
+		{
+			//https://leafletjs.com/reference-1.7.1.html#marker
+			var popup_marker_message="<center><b>"+station_names[i]+"</b><br>"+station_locations[i][station_locations[i].length-1][0]+"</center>";
+			map_content[i].marker=new L.Marker([ station_locations[i][station_locations[i].length-1][1], station_locations[i][station_locations[i].length-1][2] ], {title:station_names[i]}, {opacity:0.8} ).bindPopup(popup_marker_message).openPopup();//.addTo(leaflet_map);	//tomamos el último array [station_locations[i].length-1] de cada estación, ya que es el elemento con la última actualización de ubicación
 			
 			//date: station_locations[i][0]
 			//name: station_names[i]
@@ -462,10 +423,6 @@ if(use_map)
       options: statsGraphChartOptions
     }
   )
-  
-			
-			
-			
 			$(".loading").fadeOut(800);//.hide();
 		}
 	);
