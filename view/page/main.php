@@ -77,7 +77,7 @@ if (!defined('FROM_INDEX')) die();
           <!-- Left col -->
           <section class="col-lg-7 connectedSortable">
             <!-- Custom tabs (Charts with tabs)-->
-            <div class="card">
+            <div class="card card-with-data">
               <div class="card-header">
                 <h3 class="card-title" id="sensor-chart-title">
                   <i class="fas fa-chart-pie mr-1"></i>
@@ -114,7 +114,7 @@ if (!defined('FROM_INDEX')) die();
             </div>
 			
 			<!-- STATS GRAPH -->
-            <div class="card bg-gradient-info">
+            <div class="card bg-gradient-info card-with-data">
               <div class="card-header border-0">
                 <h3 class="card-title">
                   <i class="fas fa-th mr-1"></i>
@@ -205,7 +205,7 @@ if (!defined('FROM_INDEX')) die();
 			
 			<!-- MAP -->
 			
-			<div class="card bg-gradient-primary" style="background:#125;">
+			<div class="card bg-gradient-primary card-with-data" style="background:#125;">
 				<div class="card-header border-0">
 					<h3 class="card-title">
 					  <i class="fas fa-map-marker-alt mr-1"></i>

@@ -52,12 +52,16 @@ function main(daily_charts,fm,to_month,to_date,online_threshold_minutes,primary_
 		if(unsorted_data.length==0)
 		{
 			$("#boxes").hide();
-			alert("No hay datos recogidos para esa fecha");
+			$(".card-with-data").hide();
 			$(".loading").fadeOut(800);
+			alert("No hay datos recogidos para esa fecha");
 			return;
 		}
 		else
-			$("#boxes").show();
+		{
+			$("#boxes").fadeIn(800);
+			$(".card-with-data").fadeIn(800);
+		}
 
 	//mapeamos todos los valores necesarios
 //console.log(sensor_maps);
