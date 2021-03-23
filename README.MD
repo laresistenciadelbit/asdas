@@ -2,11 +2,11 @@
 
 ![alt asdas](https://raw.githubusercontent.com/laresistenciadelbit/asdas/main/readme_images/smarphone-asdas.png)
 
-[FULL DOCUMENTATION (SPANISH)](https://github.com/laresistenciadelbit/varios/raw/master/ASDAS_PUBLIC.PDF)
+[FULL PDF DOCUMENTATION (SPANISH)](https://github.com/laresistenciadelbit/varios/raw/master/ASDAS_PUBLIC.PDF)
 
-[FULL DOCUMENTATION LITE (SPANISH)(NO CODE DIAGRAMS)](https://github.com/laresistenciadelbit/varios/raw/master/ASDAS_PUBLIC_LITE.PDF)
+[FULL PDF DOCUMENTATION LITE (SPANISH)(NO CODE DIAGRAMS)](https://github.com/laresistenciadelbit/varios/raw/master/ASDAS_PUBLIC_LITE.PDF)
 
-##SPANISH
+## SPANISH
 
 Arduino Sim Data Acquisition System es un proyecto que cubre toda la parte de
 adquisición de datos de sensores desde el circuito físico, a la transmisión de los datos,su almacenaje, y su visualización en tiempo real desde un navegador Web.
@@ -40,9 +40,8 @@ Puede ser usado con una base de datos SQLITE o MYSQL.
 (6) Gráfica que muestra los estados de las estaciones
 
 (7) Mapa que muestra la ubicación de cada estación
-
-
-
+___
+.
 ## ENGLISH
 
 ASDAS is a project which covers all the data acquisition part of sensors starting from the physical circuit followed by the data transmission, its storage and visualization in real time from a Web Browser.
