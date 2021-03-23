@@ -1,5 +1,5 @@
 <?php
-/*	ASDAS - Arduino Sim Data Adquisition System
+/*	ASDAS - Arduino Sim Data Acquisition System
 -Adminlte 3.1.0 con bootstrap v4.5.3. 
 -Librerías añadidas: leaflet, moment y tempusdominus(locale:es)
 -Por detrás php con un modelo simple personal tipo modelo-vista-controlador

@@ -119,7 +119,7 @@ else //manejamos las peticiones del usuario
 			default:
 				$use_map=true;
 				$sensor_maps=$model->get_sensor_maps();
-				$current_page="Arduino Sim Data Adquisition System";
+				$current_page="Arduino Sim Data Acquisition System";
 				$current_view='main';				
 				//$unsorted_data=$model->get_all(); // <- ahora la pedimos por ajax con javascript
 		}

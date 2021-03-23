@@ -5,7 +5,7 @@
       <img src="view/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
       <span class="brand-text font-weight-light">ASDAS</span>
-	  <span style="color:#efefef;font-size:9.5px;position:absolute;left:62px;top:34px;">arduino sim data adquisition system</span>
+	  <span style="color:#efefef;font-size:9.5px;position:absolute;left:62px;top:34px;">arduino sim data acquisition system</span>
     </a>
     <!-- Sidebar -->
     <div class="sidebar">

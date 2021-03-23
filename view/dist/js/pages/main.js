@@ -103,9 +103,9 @@ function main(daily_charts,fm,to_month,to_date,online_threshold_minutes,primary_
 	
 	var date_online;	//(online en los últimos x minutos (configurable))
 	if(online_threshold_minutes>0)
-		date_online=moment(date_now).subtract(online_threshold_minutes, 'minutes').toDate();
+		date_online=moment(new Date()).subtract(online_threshold_minutes, 'minutes').toDate();
 	else
-		date_online= moment(date_now).subtract(15, 'minutes').toDate();	
+		date_online= moment(new Date()).subtract(15, 'minutes').toDate();	
 	
 	var date_online_str = moment(date_online).format('YYYY-MM-DD HH:mm:ss'); //date_online.getFullYear()+"-"+date_pad(date_online.getMonth())+"-"+date_pad(date_online.getDate())+" "+date_pad(date_online.getHours())+":"+date_pad(date_online.getMinutes())+":"+date_pad(date_online.getSeconds()) ;
 
