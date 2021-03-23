@@ -1,6 +1,6 @@
 # (A)rduino (S)im (D)ata (A)cquisition (S)ystem
 
-![alt asdas] (https://raw.githubusercontent.com/laresistenciadelbit/asdas/readme-images/smarphone-asdas.png)
+![alt asdas](https://raw.githubusercontent.com/laresistenciadelbit/asdas/main/readme_images/smarphone-asdas.png)
 
 [FULL DOCUMENTATION (SPANISH)](https://github.com/laresistenciadelbit/varios/raw/master/ASDAS_PUBLIC.PDF)
 
@@ -25,7 +25,7 @@ El servidor funciona en PHP, está basado en el framework Adminlte (Con bootstra
 Puede ser usado con una base de datos SQLITE o MYSQL.
 
 #### INTERFAZ
-![alt asdas_interface] (https://raw.githubusercontent.com/laresistenciadelbit/asdas/readme-images/asdas-interface.png)
+![alt asdas_interface](https://raw.githubusercontent.com/laresistenciadelbit/asdas/main/readme_images/asdas-interface.png)
 
 (1) Barra lateral de acceso al área de configuración y a las distintas estaciones
 
@@ -63,7 +63,7 @@ The server works in PHP, is based on Adminlte framework (Bootstrap behind), and 
 It can use SQLITE or MYSQL as database.
 
 #### INTERFACE
-![alt asdas_interface] (https://raw.githubusercontent.com/laresistenciadelbit/asdas/readme-images/asdas-interface.png)
+![alt asdas_interface](https://raw.githubusercontent.com/laresistenciadelbit/asdas/main/readme_images/asdas-interface.png)
 
 (1) Left sidebar for accessing to configuration or the different stations
 
