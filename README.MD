@@ -2,8 +2,6 @@
 
 ![alt asdas](https://raw.githubusercontent.com/laresistenciadelbit/asdas/main/readme_images/smarphone-asdas.png)
 
-[FULL PDF DOCUMENTATION (SPANISH)](https://github.com/laresistenciadelbit/varios/raw/master/ASDAS_PUBLIC.PDF)
-
 [FULL PDF DOCUMENTATION LITE (SPANISH)(NO CODE DIAGRAMS)](https://github.com/laresistenciadelbit/varios/raw/master/ASDAS_PUBLIC_LITE.PDF)
 
 [WEB DEMO](https://demo.diab.website)
