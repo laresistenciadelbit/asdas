@@ -17,7 +17,7 @@ class Mydb extends mysqli
 		$ret = $this->query($query);
 		if(!$ret) {
 			if(DEBUG)
-				return $this->error();
+				return $this->error;
 			else
 				return FAIL_RETURN;
 		}
@@ -29,7 +29,7 @@ class Mydb extends mysqli
 	{
 		$ret = $this->query($query);
 		if(!$ret && DEBUG ) {
-			echo $this->error();
+			echo $this->error;
 		}
 		if($ret)
 			return true;
@@ -46,7 +46,7 @@ class Mydb extends mysqli
 	{
 		$ret = $this->query($query);
 		if(!$ret && DEBUG) {
-			echo $this->error();
+			echo $this->error;
 		}
 		
 		$array=array();
@@ -62,7 +62,7 @@ class Mydb extends mysqli
 	{
 		$ret = $this->query($query);
 		if(!$ret && DEBUG) {
-			echo $this->error();
+			echo $this->error;
 		}
 		while($row = $ret->fetch_assoc() ){$arr=$row;}
 		return $arr;	
@@ -72,7 +72,7 @@ class Mydb extends mysqli
 	{
 		$ret = $this->query($query);
 		if(!$ret && DEBUG) {
-			echo $this->error();
+			echo $this->error;
 		}
 		$array=array();
 		while($row = $ret->fetch_assoc())
@@ -82,4 +82,7 @@ class Mydb extends mysqli
 		}
 		return json_encode($array);
 	}
+	function day_date_function(){return "DATE_FORMAT(time,'%Y-%m-%d')";}
+	function month_date_function() {return "DATE_FORMAT(time,'%Y-%m')";}
+}
 ?>

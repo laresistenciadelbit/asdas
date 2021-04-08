@@ -110,13 +110,13 @@ class Model
 		if(!is_null($date))
 		{
 			if( substr_count( $date,'-' )!=1 )
-				$where_date=" WHERE strftime('%Y-%m-%d',time) = '".$date."' "; //$where_date=" WHERE time = DATE('".$date."') ";
+				$where_date=" WHERE ".$this->db->day_date_function()." = '".$date."' "; //$where_date=" WHERE time = DATE('".$date."') ";
 			else
 			{
 				//$month_start=$date."/01";
 				//$month_end=$date."/31"; //irrelevante si nos pasamos de días totales de ese mes
 				//$where_date=" WHERE time between DATE('".$month_start."') AND DATE('".$month_end."') ";
-				$where_date=" WHERE strftime('%Y-%m',time) = '".$date."' ";
+				$where_date=" WHERE ".$this->db->month_date_function()." = '".$date."' ";
 			}
 			$where_station_prefix=" AND ";
 		}

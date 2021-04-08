@@ -93,5 +93,7 @@ class Mydb extends SQLite3
 		}
 		return json_encode($array);
 	}
+	function day_date_function(){return "strftime('%Y-%m-%d',time)";}
+	function month_date_function() {return "strftime('%Y-%m',time)";}
 }
 ?>
