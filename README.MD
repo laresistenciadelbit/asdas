@@ -20,7 +20,7 @@ La parte de la estación la puedes ver en:
 
 #### SERVIDOR WEB ASDAS
 
-El servidor funciona en PHP, está basado en el framework Adminlte (Con bootstrap por detrás), y usa Leaflet.js para generar mapas y la librería Moment.js para procesar los datos en el cliente.
+El servidor funciona en PHP, está basado en el framework Adminlte (Con bootstrap por detrás), y usa Leaflet.js para generar mapas y la librería Lodash para procesar los datos en el cliente.
 
 Puede ser usado con una base de datos SQLITE o MYSQL.
 
